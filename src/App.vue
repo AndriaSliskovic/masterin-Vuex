@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <v-app>
-      <NavBar />
+      <Layer/>
+  <NavBar/>
       <router-view :key="$route.fullPath" />
     </v-app>
   </div>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue'
+import Layer from './Layer'
+import NavBar from './components/NavBar.vue'
 
 export default {
   components: {
+    Layer,
     NavBar
   }
 }

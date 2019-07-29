@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import EventCreate from './views/EventCreate.vue'
-import EventList from './views/EventList.vue'
+import Home from './views/Home.vue'
 import EventShow from './views/EventShow.vue'
 import ProbaStatea from './views/ProbaStatea.vue'
 import Tabela from './views/Tabela.vue'
-import Layer from './views/Layer.vue'
+import Tabela2 from './views/Tabela2.vue'
 
 Vue.use(Router)
 
@@ -14,8 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'layer',
-      component: Layer
+      name: 'pocetna',
+      component: Home
     },
     {
       path: '/event/create',
@@ -38,6 +38,12 @@ export default new Router({
       path: '/tabela',
       name: 'tabela',
       component: Tabela,
+      props: true
+    },
+    {
+      path: '/tabela2',
+      name: 'tabela2',
+      component: Tabela2,
       props: true
     }
   ]

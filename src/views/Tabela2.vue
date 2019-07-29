@@ -1,7 +1,11 @@
 <template>
   <div>
     <h4>Tabela</h4>
-    <v-data-table :headers="headers" :items="items" :items-per-page="5" class="elevation-1"></v-data-table>
+    <v-data-table :headers="headers" class="elevation-1">
+      <tbody>
+        
+      </tbody>
+    </v-data-table>
   </div>
 </template>
 
