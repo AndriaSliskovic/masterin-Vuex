@@ -21,6 +21,11 @@
             <router-link :to="{ name: 'tabela2' }" exact>Tabela 2</router-link>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item @click>
+          <v-list-item-content>
+            <router-link :to="{ name: 'login' }" exact>Login</router-link>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <!-- <LeftSidebar/> -->
@@ -33,7 +38,12 @@
       <!-- Ceo kontent ide ovde -->
     </v-content>
     <v-footer color="indigo" app>
+      <v-layout
+      justify-center
+      wrap
+    >
       <span class="white--text">&copy; 2019</span>
+      </v-layout>
     </v-footer>
   </v-app>
 </template>

@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <h4>Tabela</h4>
     <v-data-table :headers="headers" class="elevation-1">
       <tbody>
@@ -13,6 +14,7 @@
 import EventService from '@/services/EventService.js'
 
 export default {
+
       created() {
     EventService.getEvents()
       .then(response => {
@@ -35,11 +37,6 @@ export default {
         items:this.items
       }
     },
-    methods:{
-      renderButton(){
-        return `<button>Dugme</button>`
-      }
-    }
 
 }
 </script>

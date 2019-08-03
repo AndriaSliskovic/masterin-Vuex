@@ -6,6 +6,7 @@ import EventShow from './views/EventShow.vue'
 import ProbaStatea from './views/ProbaStatea.vue'
 import Tabela from './views/Tabela.vue'
 import Tabela2 from './views/Tabela2.vue'
+import Login from './views/Login.vue'
 
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ export default new Router({
       name: 'tabela2',
       component: Tabela2,
       props: true
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ]
 })
