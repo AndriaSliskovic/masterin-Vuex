@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import EventCreate from './views/EventCreate.vue'
 import Home from './views/Home.vue'
-import EventShow from './views/EventShow.vue'
+import EventCreate from './views/events/EventCreate.vue'
+import EventList from './views/events/EventList.vue'
+import EventShow from './views/events/EventShow.vue'
 import ProbaStatea from './views/ProbaStatea.vue'
-import Tabela from './views/Tabela.vue'
-import Tabela2 from './views/Tabela2.vue'
-import Login from './views/Login.vue'
+import Tabela from './views/tabela/Tabela.vue'
+import Tabela2 from './views/tabela2/Tabela2.vue'
+import Login from './views/login/Login.vue'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/event/create',
       name: 'event-create',
       component: EventCreate
+    },
+    {
+      path: '/eventlist',
+      name: 'event-list',
+      component: EventList
     },
     {
       path: '/event/:id',

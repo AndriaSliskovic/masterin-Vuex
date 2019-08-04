@@ -2,16 +2,18 @@ import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import App from './App.vue'
-import Layer from './Layer.vue'
+import BaseLayer from './layers/BaseLayer.vue'
 import router from './router'
 import store from './store/store'
-import BaseIcon from '@/components/BaseIcon'
 import vuetify from '@/plugins/vuetify'
+import nprogerss from 'nprogress'
 
-Vue.component('BaseIcon', BaseIcon)
+//Globalno ucitani osnovni Layer posto on nije komponenta
+Vue.component('BaseLayer', BaseLayer)
 
 Vue.config.productionTip = false
 
+//Babelova scripta za automatsko globalno ucitavanje Base komponenti
 const requireComponent = require.context(
   './components',
   false,
@@ -32,5 +34,5 @@ new Vue({
   router,
   store,
   vuetify,
-  render: h => h(Layer)
+  render: h => h(App)
 }).$mount('#app')

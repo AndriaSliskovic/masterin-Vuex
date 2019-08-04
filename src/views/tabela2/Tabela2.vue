@@ -1,21 +1,19 @@
 <template>
-  <div>
-
+  <BaseLayer>
     <h4>Tabela</h4>
     <v-data-table :headers="headers" class="elevation-1">
-      <tbody>
-        
-      </tbody>
+      <tbody></tbody>
     </v-data-table>
-  </div>
+  </BaseLayer>
 </template>
 
 <script>
 import EventService from '@/services/EventService.js'
 
+
 export default {
 
-      created() {
+  created() {
     EventService.getEvents()
       .then(response => {
         this.items = response.data
@@ -26,18 +24,17 @@ export default {
       })
   },
   data() {
-      return {
-        items:[],
-        headers:[
-          {text:'Title',value:'title'},
-          {text:'Location',value:'location'},
-          {text:'Description',value:'description'},
-          {text:'Category',value:'category'},        
-        ],
-        items:this.items
-      }
-    },
-
+    return {
+      items: [],
+      headers: [
+        { text: 'Title', value: 'title' },
+        { text: 'Location', value: 'location' },
+        { text: 'Description', value: 'description' },
+        { text: 'Category', value: 'category' }
+      ],
+      items: this.items
+    }
+  }
 }
 </script>
 

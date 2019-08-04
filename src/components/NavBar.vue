@@ -1,12 +1,19 @@
 <template>
   <div id="nav" class="nav">
-    <router-link to="/" class="brand">Real World Events</router-link>
-    <nav>
-      <router-link :to="{ name: 'event-list' }">List</router-link> |
-      <router-link :to="{ name: 'event-create' }">Create</router-link> |
-      <router-link :to="{ name: 'proba' }">Proba statea</router-link> |
-      <router-link :to="{ name: 'tabela' }">Tabela</router-link> |
-    </nav>
+    <v-toolbar-title>Workshop</v-toolbar-title>
+    <v-spacer></v-spacer>
+
+    <v-toolbar-items>
+      <v-btn text>
+        <router-link :to="{ name: 'event-list' }" tag="button">Event list</router-link>
+      </v-btn>
+      <v-btn text>
+        <router-link :to="{ name: 'proba' }" tag="button">Proba statea</router-link>
+      </v-btn>
+      <v-btn text>
+        <router-link :to="{ name: 'tabela' }" tag="button">Tabela</router-link>
+      </v-btn>
+    </v-toolbar-items>
   </div>
 </template>
 

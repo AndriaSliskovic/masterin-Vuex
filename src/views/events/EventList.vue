@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <BaseLayer>
     <h1>Events for {{ user.user.name }}</h1>
     <EventCard v-for="event in event.events" :key="event.id" :event="event"/>
     <template v-if="page != 1">
@@ -9,7 +9,7 @@
     </template>
     <router-link v-if="hasNextPage" :to="{ name: 'event-list', query: { page: page + 1 } }" rel="next">
       Next Page</router-link>
-  </div>
+  </BaseLayer>
 </template>
 
 <script>
@@ -28,6 +28,9 @@ export default {
       perPage: this.perPage,
       page: this.page
     })
+  },
+  mounted(){
+    console.log(this.$store.user.user)
   },
   computed: {
     page() {

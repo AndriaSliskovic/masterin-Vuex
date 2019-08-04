@@ -1,23 +1,13 @@
 <template>
   <div id="app">
-    <v-app>
-      <Layer/>
-  <NavBar/>
+
       <router-view :key="$route.fullPath" />
-    </v-app>
+
   </div>
 </template>
 
 <script>
-import Layer from './Layer'
-import NavBar from './components/NavBar.vue'
 
-export default {
-  components: {
-    Layer,
-    NavBar
-  }
-}
 </script>
 
 <style>
@@ -34,7 +24,7 @@ body {
 }
 #app {
   box-sizing: border-box;
-  width: 500px;
+
   padding: 0 20px 20px;
   margin: 0 auto;
 }

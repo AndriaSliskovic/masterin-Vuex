@@ -1,5 +1,6 @@
 <template>
-  <v-container>
+<BaseLayer>
+<v-container>
     <v-app-bar color="primary" dark>
       <v-toolbar-title>Login stranica</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -36,6 +37,8 @@
       </v-layout>
     </v-content>
   </v-container>
+</BaseLayer>
+  
 </template>
 
 <script>

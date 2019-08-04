@@ -1,21 +1,15 @@
 <template>
-  <div>
+  <BaseLayer>
     <VCard>
       <v-card-title>{{ime}}</v-card-title>
       <v-card-text>Broj je {{broj}}</v-card-text>
       <input type="number" v-model.number="povecajGaZa" />
-                <v-input
-            :messages="['Messages']"
-            append-icon="close"
-            prepend-icon="phone"
-          >
-            Default Slot
-          </v-input>
+      <v-input :messages="['Messages']" append-icon="close" prepend-icon="phone">Default Slot</v-input>
     </VCard>
     <div class="my-2">
       <VBtn depressed small color="primary" @click="povecajBroj">Uvecaj broj</VBtn>
     </div>
-  </div>
+  </BaseLayer>
 </template>
 
 <script>
@@ -29,6 +23,7 @@ export default {
   },
   data() {
     return {
+      ime:'Andria',
       povecajGaZa: 5
     }
   },
@@ -44,11 +39,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.v-card__title {
+  color: blue
+}
 #input-usage .v-input__prepend-outer,
 #input-usage .v-input__append-outer,
 #input-usage .v-input__slot,
 #input-usage .v-messages {
-  border: 1px dashed rgba(0,0,0, .4);
+  border: 1px dashed rgba(0, 0, 0, 0.4);
 }
 </style>
