@@ -29,9 +29,7 @@ export default {
       page: this.page
     })
   },
-  mounted(){
-    console.log(this.$store.user.user)
-  },
+
   computed: {
     page() {
       return parseInt(this.$route.query.page) || 1

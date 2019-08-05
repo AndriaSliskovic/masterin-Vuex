@@ -5,10 +5,11 @@
       <v-card-text>Broj je {{broj}}</v-card-text>
       <input type="number" v-model.number="povecajGaZa" />
       <v-input :messages="['Messages']" append-icon="close" prepend-icon="phone">Default Slot</v-input>
-    </VCard>
-    <div class="my-2">
+          <div class="my-2">
       <VBtn depressed small color="primary" @click="povecajBroj">Uvecaj broj</VBtn>
     </div>
+    </VCard>
+
   </BaseLayer>
 </template>
 
@@ -23,7 +24,6 @@ export default {
   },
   data() {
     return {
-      ime:'Andria',
       povecajGaZa: 5
     }
   },
@@ -31,6 +31,16 @@ export default {
     povecajBroj() {
       this.$store.commit('POVECAJ_BROJ', this.povecajGaZa)
     }
+  },
+  created(){
+    console.log(this.ime)
+    console.log(`pocetni broj je ${this.broj}`)
+  },
+  beforeUpdate(){
+    console.log(`pre updatea broj je ${this.broj}`)
+  },
+  updated(){
+    console.log(`updejtovani broj je ${this.broj}`)
   },
   computed: mapState({
     ime: state => state.proba.naziv.name,

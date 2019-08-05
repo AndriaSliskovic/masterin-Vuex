@@ -16,6 +16,9 @@ export default {
     //Pozivanje actiona preko mapActions
     this.fetchData()
   },
+  updated(){
+    
+  },
 
   data() {
     return {

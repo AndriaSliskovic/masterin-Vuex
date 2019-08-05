@@ -5,4 +5,5 @@ export const leviMenuSettinngs=[
     { title: 'Eventi', icon: 'mdi-help-box',route:'event-list' },
     { title: 'Tabela2', icon: 'mdi-help-box',route:'tabela2' },
     { title: 'Login', icon: 'mdi-help-box',route:'login' },
+    { title: 'State-proba', icon: 'mdi-help-box',route:'proba' },
   ]

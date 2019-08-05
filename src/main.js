@@ -6,7 +6,8 @@ import BaseLayer from './layers/BaseLayer.vue'
 import router from './router'
 import store from './store/store'
 import vuetify from '@/plugins/vuetify'
-import nprogerss from 'nprogress'
+// import nprogerss from 'nprogress'
+import 'nprogress/nprogress.css'
 
 //Globalno ucitani osnovni Layer posto on nije komponenta
 Vue.component('BaseLayer', BaseLayer)

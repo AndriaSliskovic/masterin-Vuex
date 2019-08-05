@@ -8,14 +8,12 @@ export const state = {
 export const mutations = {
   UCITAJ_PODATKE(state, payload) {
     state.stavke = payload
-    console.log(this.stavke)
   }
 }
 export const actions = {
   fetchData({ commit }) {
     EventService.getEvents()
       .then(response => {
-        console.log(response.data)
         commit('UCITAJ_PODATKE', response.data)
       })
       .catch(error => {
