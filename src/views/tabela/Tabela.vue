@@ -15,6 +15,7 @@ export default {
     //this.$store.dispatch('tabela/fetchData')
     //Pozivanje actiona preko mapActions
     this.fetchData()
+    this.items = this.tabela.stavke
   },
   updated(){
     
@@ -30,15 +31,11 @@ export default {
         { text: 'Description', value: 'description' },
         { text: 'Category', value: 'category' }
       ],
-      // items: this.$store.events.events,
 
     }
   },
   methods: mapActions('tabela', ['fetchData']),
   computed: {
-    rezultat(){
-
-    },
     ...mapState({user: 'user',tabela: 'tabela',events:'event'})
   }
 }
