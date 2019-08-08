@@ -10,6 +10,8 @@ import Tabela2 from './views/tabela2/Tabela2.vue'
 import Login from './views/login/Login.vue'
 import NProgress from 'nprogress'
 import store from '@/store/store'
+import NotFound from './views/errorPages/NotFound.vue'
+import NetworkIssue from './views/errorPages/NetworkIssue.vue';
 
 
 Vue.use(Router)
@@ -40,10 +42,13 @@ const router= new Router({
       name: 'event-show',
       component: EventShow,
       props: true,
+      //Ucitavanje stranice preko routera
       beforeEnter(routeTo, routeFrom, next) { // before this route is loaded
         store.dispatch('event/fetchEvent', routeTo.params.id).then(() => {
           next()
         })
+        .catch(() => next({ name: '404', 
+        params: { resource: 'event' } }))
       }
     },
     {
@@ -68,6 +73,23 @@ const router= new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: NotFound,
+      props:true
+    },
+    {
+      path: '/network-issue',
+      name: 'network-issue',
+      component: NetworkIssue,
+      props:true
+    },
+    //Ruta za hvatanje svih navigacija koje ne odgovaraju putanji ili ne postoji
+    {
+      path: '*',
+      redirect:{name:'404',params: { resource: 'page' }}
     }
   ]
 })

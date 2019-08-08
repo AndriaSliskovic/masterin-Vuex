@@ -8,18 +8,19 @@
 <script>
 import EventService from '../../services/EventService'
 import { mapState, mapActions } from 'vuex'
+import NProgress from 'nprogress'
+import store from '@/store/store'
 
 export default {
-  created() {
-    //Rucno pozivanje actiona sa namespaceom
-    //this.$store.dispatch('tabela/fetchData')
-    //Pozivanje actiona preko mapActions
-    this.fetchData()
-    this.items = this.tabela.stavke
-  },
-  updated(){
-    
-  },
+  //Pozivanje actionCreatora kroz komponentni router
+  beforeRouteEnter(routeTo, routeFrom, next) {
+        NProgress.start()
+        //Ne moze da koristi this
+        store.dispatch('tabela/fetchData').then(() => {
+          NProgress.done() // When the action is done complete progress bar
+          next() // Only once this is called does the navigation continue
+        })
+      },
 
   data() {
     return {
@@ -37,7 +38,11 @@ export default {
   methods: mapActions('tabela', ['fetchData']),
   computed: {
     ...mapState({user: 'user',tabela: 'tabela',events:'event'})
-  }
+  },
+    mounted(){
+    this.items=this.tabela.stavke
+    console.log(`mounted fetchovani podaci ${this.tabela.stavke}`)
+  },
 }
 </script>
 

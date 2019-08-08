@@ -23,12 +23,13 @@
           v-for="item in items"
           :key="item.title"
           link
+          @click="clickHandler"
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-content>
+          <v-list-item-content >
             <v-list-item-title>
             <router-link :to="{ name: item.route }" exact tag="button">{{item.title}}</router-link>
             </v-list-item-title>
@@ -43,7 +44,11 @@
 <script>
 import {leviMenuSettinngs} from '../settings.js';
  export default {
-   
+   methods:{
+     clickHandler(){
+       console.log("imam klik")
+     }
+   },
     data () {
       return {
         items: leviMenuSettinngs,
