@@ -12,7 +12,7 @@ export const mutations = {
 }
 export const actions = {
   fetchData({ commit }) {
-    EventService.getEvents()
+    return EventService.getEvents()
       .then(response => {
         commit('UCITAJ_PODATKE', response.data)
       })

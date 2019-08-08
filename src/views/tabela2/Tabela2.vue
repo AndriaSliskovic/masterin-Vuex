@@ -12,17 +12,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in items" :key="item.name">
+        <tr v-for="item in items" :key="item.id">
           <!-- <tr> -->
           <td>{{item.title}}</td>
           <td>{{item.location}}</td>
           <td>{{item.description}}</td>
-          <td>{{item.category}}</td>
+          <td >{{item.category}}</td>
           <td>
-            <v-btn color="primary" @click="clickEdit">Edit {{item.id}}</v-btn>
+            <v-btn color="primary" @click="clickEdit(item.id)">Edit {{item.id}}</v-btn>
           </td>
           <td>
-            <v-btn color="error" @click="clickDelete">Delete</v-btn>
+            <v-btn color="error" @click="clickDelete(item.id)">Delete</v-btn>
           </td>
         </tr>
       </tbody>
@@ -33,30 +33,37 @@
 <script>
 import EventService from '@/services/EventService.js'
 import { mapState, mapActions } from 'vuex'
+import NProgress from 'nprogress'
+import store from '@/store/store'
 
 export default {
-  created() {
-    this.fetchData()
-    console.log('fetchovani podaci')
+  //Pozivanje actionCreatora kroz komponentni router
+  beforeRouteEnter(routeTo, routeFrom, next) {
+        NProgress.start()
+        //Ne moze da koristi this
+        store.dispatch('tabela/fetchData').then(() => {
+          NProgress.done() // When the action is done complete progress bar
+          next() // Only once this is called does the navigation continue
+        })
+      },
+  methods: {
+  ...mapActions('tabela', ['fetchData']),
+  
+            clickEdit:function(id){
+              console.log(`kliknuto edit ${id}`)
+            },
+            clickDelete:function(id){
+              console.log(`kliknuto delete ${id}`)
+            },
   },
-  methods: mapActions('tabela', ['fetchData']),
-            clickEdit(){
-              console.log(`kliknuto edit `)
-            },
-            clickDelete(){
-              console.log(`kliknuto delete `)
-            },
+
   computed: {
     ...mapState({ user: 'user', tabela: 'tabela', events: 'event' })
   },
-  mounted() {
-    console.log('mounted podaci')
-    console.log(this.tabela.stavke)
-    this.items = this.tabela.stavke
-    console.log(this.items)
-  },
-  beforeUpdate(){
 
+  mounted(){
+    this.items=this.tabela.stavke
+    console.log(`mounted fetchovani podaci ${this.tabela.stavke}`)
   },
   data() {
     return {
@@ -66,7 +73,8 @@ export default {
         { text: 'Location', value: 'location' },
         { text: 'Description', value: 'description' },
         { text: 'Category', value: 'category' }
-      ]
+      ],
+      items:this.items
     }
   },
 

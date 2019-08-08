@@ -43,6 +43,7 @@
 <script>
 import {leviMenuSettinngs} from '../settings.js';
  export default {
+   
     data () {
       return {
         items: leviMenuSettinngs,
