@@ -11,7 +11,9 @@ import Login from './views/login/Login.vue'
 import NProgress from 'nprogress'
 import store from '@/store/store'
 import NotFound from './views/errorPages/NotFound.vue'
-import NetworkIssue from './views/errorPages/NetworkIssue.vue';
+import NetworkIssue from './views/errorPages/NetworkIssue.vue'
+import FeaturePage from "./views/featureManager/FeaturePage.vue"
+import FormFeature from './views/featureManager/FormFeature.vue'
 
 
 Vue.use(Router)
@@ -73,6 +75,17 @@ const router= new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/feature',
+      name: 'feature',
+      component: FeaturePage,
+      children:[
+        {
+          path:'form',
+          component:FormFeature
+        }
+      ]
     },
     {
       path: '/404',
