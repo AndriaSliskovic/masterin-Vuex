@@ -7,6 +7,13 @@
 
 <script>
 export default {
+  data(){
+    return {
+      event:{
+        title:""
+      }
+    }
+  }
     
 }
 </script>

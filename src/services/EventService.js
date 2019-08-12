@@ -29,5 +29,9 @@ export default {
   },
   postEvent(event) {
     return apiClient.post('/events', event)
+  },
+  getCompanies(){
+    
+    return apiClient.get("/companies")
   }
 }
