@@ -6,28 +6,33 @@ export const state = {
   companies: [],
   selectedCompany:"",
   dataObject:{},
-  modules:[]
+  modules:[],
+  selectedModules:[]
 
 }
 export const mutations = {
   UCITAJ_PODATKE(state, payload) {
+    console.log('radi store')
     state.companies = payload
   },
   UCITAJ_MODULE(state, payload){
     state.modules=payload
   },
   SELECTED_COMPANY(state,payload){
-    console.log(payload)
+    //console.log(payload)
     state.selectedCompany = payload
   },
+  SELECTED_MODULES(state,payload){
+    state.selectedModules=payload
+  },
   SEND_DATA(state,payload){
-    console.log(payload)
+    //console.log(payload)
     state.dataObject=payload
   }
 }
 export const actions = {
-  fetchData({ commit }) {
-    return EventService.getCompanies()
+  async fetchData({ commit }) {
+    return await EventService.getCompanies()
       .then(response => {
         commit('UCITAJ_PODATKE', response.data)
       })
@@ -50,6 +55,10 @@ export const actions = {
   selectedCompany({commit},company){
       console.log(company)
     commit('SELECTED_COMPANY',company)
+  },
+  selectedModules({commit},modules){
+    console.log(`selektovani moduli ${modules}`)
+    commit('SELECTED_MODULES',modules)
   },
   submitForm({commit},object){
     console.log(object)

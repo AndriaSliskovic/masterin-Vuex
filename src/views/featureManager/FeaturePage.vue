@@ -1,117 +1,87 @@
 <template>
-  <div>
-    <h3>Feature manager</h3>
-    <form>
-      <v-flex xs12 sm6 d-flex data-app>
-        <!-- <select id="company" class="form-control" v-model="selectedCompany" @change="setSelected">
-          <option v-for="company in companies" :key="company.COMPANY_ID">{{ company.COMPANY_NAME }}</option>
-        </select>-->
-        <v-select
-          :items="companies"
-          name="company"
-          item-text="COMPANY_NAME"
-          filled
-          label="Select Company"
-          v-model="selectedCompany"
-          @change="setSelected"
-        ></v-select>
-      </v-flex>
-    </form>
+  <v-app id="inspire">
     <div>
-      <div v-if="selectedCompany">
-        <p>Selektovana kompanije je : {{selectedCompany}}</p>
-        <p>State vrednost je :{{feature.selectedCompany}}</p>
-        <!-- RADIO BUTTONS -->
-        <!-- Preko Vuetifya -->
-        <div>
-          <v-radio-group v-model="radios" :mandatory="false">
-            <v-radio label="Portal" value="portal"></v-radio>
-            <v-radio label="User group" value="group"></v-radio>
-          </v-radio-group>
-          <p>Radio buttoni su {{radios}}</p>
-          <!-- /radio klasika -->
-          <v-row>
-            <div>
-              <label for="portal">
-                <input type="radio" id="portal" value="portal" v-model="radios" /> Portal
-              </label>
-              <label for="female">
-                <input type="radio" id="group" value="UserGroup" v-model="radios" /> User group
-              </label>
-            </div>
-          </v-row>
-        </div>
-        <hr />
-        <div>
-          <!-- CHECK BOXEVI -->
-          <!-- Vuetify -->
+      <h3>Feature manager</h3>
+      <form>
+        <v-flex xs12 sm6 d-flex data-app>
+          <!-- <select id="company" class="form-control" v-model="selectedCompany" @change="setSelected">
+          <option v-for="company in companies" :key="company.COMPANY_ID">{{ company.COMPANY_NAME }}</option>
+          </select>-->
+          <v-select
+            :items="companies"
+            name="company"
+            item-text="COMPANY_NAME"
+            item-value="COMPANY_GUID"
+            filled
+            label="Select Company"
+            v-model="selectedCompany"
+            @change="setSelectedCompany"
+          ></v-select>
+        </v-flex>
+      </form>
+      <div>
+        <div v-if="selectedCompany">
+          <!-- Preko Vuetifya -->
           <div>
-            <v-row>
-              <v-col cols="12" sm="4" md="4">
-                <v-checkbox
-                  v-model="checkBox"
-                  label="Send Mail-red"
-                  color="red"
-                  value="Mail-red"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  v-model="checkBox"
-                  label="Send Infomail - blue"
-                  value="Mail-blue"
-                  hide-details
-                ></v-checkbox>
-              </v-col>
-            </v-row>
+            <v-radio-group v-model="radios" :mandatory="false">
+              <v-radio label="Portal" value="portal"></v-radio>
+              <v-radio label="User group" value="group"></v-radio>
+            </v-radio-group>
+            <p>
+              Radio buttoni su
+              <span class="red--text">{{radios}}</span>
+            </p>
           </div>
-          <!-- Check klasika -->
-          <v-row>
-            <div class="form-group">
-              <label for="sendmail">
-                <input type="checkbox" id="sendmail" value="SendMail" v-model="checkBox" /> Send Mail
-              </label>
-              <label for="sendInfomail">
-                <input type="checkbox" id="sendInfomail" value="SendInfoMail" v-model="checkBox" /> Send Infomail
-              </label>
-              <div>
-                Odabrani check boxevi su :
-                <ul>
-                  <li v-for="mod in modules">{{mod.description}}</li>
-                </ul>
-              </div>
-            </div>
-          </v-row>
-          <!-- SUBMIT BUTTON -->
+          <hr />
+
+          <FeatureDetail 
+          :moduli="modules" 
+          @updateModules="selectedModules=$event" 
+          :cbFn="cbHandler">
+          </FeatureDetail>
+
+          <hr />
+          <v-card class="mx-auto" max-width="400" tile>
+            <v-list>
+              <v-subheader>Selected modules :</v-subheader>
+              <v-list-item v-for="sm in selectedModules">
+                <v-list-item-content>
+                  <!-- <v-list-item-title>{{sm}} :</v-list-item-title> -->
+                  <v-list-item-title v-text="sm"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+          <hr />
           <div>
+            <!-- SUBMIT BUTTON -->
             <!-- Klasika -->
             <div>
-              <v-btn color="error" @click.prevent="submitted">Submit!</v-btn>
+              <v-btn color="error" @click.prevent="submitted">Edit</v-btn>
             </div>
-            <!-- Vuetify -->
-            <div></div>
-          </div>
-          <!-- Prikaz rezultata -->
+            <!-- Prikaz rezultata -->
 
-          <v-card v-if="isSubmited">
-            <v-card-text>
-              <v-card-title>Podaci centralnog statea</v-card-title>
-              <p>Selected company : {{feature.selectedCompany}}</p>
-              <p>Radio : {{feature.dataObject.radio}}</p>
-              <div>
-                Odabrani check boxevi su :
-                <ul>
-                  <li v-for="check in feature.dataObject.checkBoxes">{{check}}</li>
-                </ul>
-              </div>
-            </v-card-text>
-          </v-card>
+            <v-card v-if="isSubmited">
+              <v-card-text>
+                <v-card-title>Podaci centralnog statea</v-card-title>
+                <p>Selected company : {{feature.selectedCompany}}</p>
+                <div>
+                  Odabrani check boxevi su :
+                  <ul>
+                    <li v-for="check in feature.selectedModules">{{check}}</li>
+                  </ul>
+                </div>
+              </v-card-text>
+            </v-card>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
+console.log("pocinje ucitavanje script taga");
 import NProgress from 'nprogress'
 import EventService from '../../services/EventService'
 import { mapState, mapActions } from 'vuex'
@@ -121,12 +91,12 @@ export default {
   data() {
     return {
       companies: [],
-      modules:[],
+      modules: [],
       selectedCompany: null,
       radios: 'portal',
       checkBox: [],
       isSubmited: false,
-
+      selectedModules: []
     }
   },
   components: {
@@ -137,38 +107,43 @@ export default {
   beforeRouteEnter(routeTo, routeFrom, next) {
     NProgress.start()
     //Ne moze da koristi this
-    store.dispatch('feature/fetchData')
-    .then(store.dispatch('feature/fetchModules'))
-    .then(response => {
-      NProgress.done() // When the action is done complete progress bar
-      next() // Only once this is called does the navigation continue
-    })
+    //Inicijalno ucitava sve kompanije i module
+    store
+      .dispatch('feature/fetchData')
+      .then(store.dispatch('feature/fetchModules'))
+      .then(response => {
+        NProgress.done() // When the action is done complete progress bar
+        next() // Only once this is called does the navigation continue
+      })
   },
   computed: {
     ...mapState({ feature: 'feature' })
   },
   mounted() {
-    console.log(this.feature.companies);
-    this.companies = this.feature.companies;
-    this.modules=this.feature.modules;
-    //   console.log(`mounted fetchovani podaci ${this.feature.companies[0].COMPANY_NAME}`)
-    console.log(this.companies)
+    console.log("mounted")
+    this.companies=this.feature.companies
+    this.modules = this.feature.modules
   },
   methods: {
-    setSelected() {
+    setSelectedCompany() {
       store.dispatch('feature/selectedCompany', this.selectedCompany)
     },
-    makeObject(){
+    //callBack funkcija za event
+    cbHandler(modulesData){
+      console.log(modulesData)
+      this.selectedModules=modulesData
+    },
+    makeObject() {
       return {
-        company:this.selectedCompany,
-        radio:this.radios,
-        checkBoxes:this.checkBox
+        subscribedEntityId: this.selectedCompany,
+        moduleIds: this.selectedModules
       }
     },
     submitted() {
       this.isSubmited = true
-      var objekat=this.makeObject();
-      console.log(objekat);
+      store.dispatch('feature/selectedModules', this.selectedModules)
+      var objekat = this.makeObject()
+      //console.log(objekat, this.selectedModules)
       store.dispatch('feature/submitForm', objekat)
     }
   }

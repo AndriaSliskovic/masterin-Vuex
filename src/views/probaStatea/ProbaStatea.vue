@@ -1,5 +1,5 @@
 <template>
-  <BaseLayer>
+
     <VCard>
       <v-card-title>{{ime}}</v-card-title>
       <v-card-text>Broj je {{broj}}</v-card-text>
@@ -9,8 +9,6 @@
       <VBtn depressed small color="primary" @click="povecajBroj">Uvecaj broj</VBtn>
     </div>
     </VCard>
-
-  </BaseLayer>
 </template>
 
 <script>
