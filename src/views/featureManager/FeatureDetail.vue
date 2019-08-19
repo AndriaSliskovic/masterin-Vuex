@@ -18,7 +18,7 @@
         ></v-checkbox>
       </v-col>
     </v-row>
-      <button type="button" @click="cbFn(selectedModules)">Handler</button>
+      <!-- <button type="button" @click="cbFn(selectedModules)">Handler</button> -->
   </div>
 
 </template>
@@ -26,7 +26,6 @@
 export default {
   data() {
     return {
-      podatak:"lalalaa",
       selectedModules: []
     }
   },
@@ -38,13 +37,9 @@ export default {
     cbFn:Function
   },
   methods: {
-    emitProperties(){
-      this.$emit()
-    }
   },
   //Preko emit ugradjene funkcije
   updated() {
-    //console.log(this.selectedModules)
     this.$emit('updateModules', this.selectedModules)
   }
 }

@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 
 //Povezivanje preko json-servera
 const apiClient = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: `http://dev-admin.deluxebrand.com/`,
   withCredentials: false, // This is the default
   headers: {
     Accept: 'application/json',
@@ -54,7 +54,9 @@ export default {
     return apiClient.post('/events', event)
   },
   getCompanies(){
-    return apiClient.get("/companies")
+    return apiClient.post("Services/WarehouseService.svc/GetSiteCustomers",
+    {siteId:57}
+    )
   },
 
 getFeatures(){

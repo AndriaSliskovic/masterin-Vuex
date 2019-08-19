@@ -3,7 +3,7 @@ import EventService from '../../services/EventService'
 export const namespaced = true
 
 export const state = {
-  companies: [],
+  companies: {},
   selectedCompany:"",
   dataObject:{},
   modules:[],
@@ -12,7 +12,6 @@ export const state = {
 }
 export const mutations = {
   UCITAJ_PODATKE(state, payload) {
-    console.log('radi store')
     state.companies = payload
   },
   UCITAJ_MODULE(state, payload){
@@ -53,18 +52,16 @@ export const actions = {
   },
 
   selectedCompany({commit},company){
-      console.log(company)
     commit('SELECTED_COMPANY',company)
   },
   selectedModules({commit},modules){
-    console.log(`selektovani moduli ${modules}`)
+    console.log(`selected modules : ${modules}`)
     commit('SELECTED_MODULES',modules)
   },
   submitForm({commit},object){
     console.log(object)
     commit('SEND_DATA',object)
-
-    //return EventService.editFeatures(object)
+    return EventService.editFeatures(object)
   }
 }
 

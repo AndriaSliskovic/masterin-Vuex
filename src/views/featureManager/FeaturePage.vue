@@ -8,10 +8,10 @@
           <option v-for="company in companies" :key="company.COMPANY_ID">{{ company.COMPANY_NAME }}</option>
           </select>-->
           <v-select
-            :items="companies"
+            :items="feature.companies.SiteCustomersList"
             name="company"
-            item-text="COMPANY_NAME"
-            item-value="COMPANY_GUID"
+            item-text="CompanyName"
+            item-value="CompanyGuid"
             filled
             label="Select Company"
             v-model="selectedCompany"
@@ -27,53 +27,51 @@
               <v-radio label="Portal" value="portal"></v-radio>
               <v-radio label="User group" value="group"></v-radio>
             </v-radio-group>
-            <p>
-              Radio buttoni su
-              <span class="red--text">{{radios}}</span>
-            </p>
           </div>
           <hr />
 
-          <FeatureDetail 
-          :moduli="modules" 
-          @updateModules="selectedModules=$event" 
-          :cbFn="cbHandler">
-          </FeatureDetail>
-
-          <hr />
-          <v-card class="mx-auto" max-width="400" tile>
-            <v-list>
-              <v-subheader>Selected modules :</v-subheader>
-              <v-list-item v-for="sm in selectedModules">
-                <v-list-item-content>
-                  <!-- <v-list-item-title>{{sm}} :</v-list-item-title> -->
-                  <v-list-item-title v-text="sm"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-          <hr />
-          <div>
-            <!-- SUBMIT BUTTON -->
-            <!-- Klasika -->
-            <div>
-              <v-btn color="error" @click.prevent="submitted">Edit</v-btn>
-            </div>
-            <!-- Prikaz rezultata -->
-
-            <v-card v-if="isSubmited">
-              <v-card-text>
-                <v-card-title>Podaci centralnog statea</v-card-title>
-                <p>Selected company : {{feature.selectedCompany}}</p>
-                <div>
-                  Odabrani check boxevi su :
-                  <ul>
-                    <li v-for="check in feature.selectedModules">{{check}}</li>
-                  </ul>
-                </div>
-              </v-card-text>
+        <v-row>
+          <v-col>
+            <FeatureDetail
+              :moduli="feature.modules"
+              @updateModules="selectedModules=$event"
+              :cbFn="cbHandler"
+            ></FeatureDetail>
+          </v-col>
+          <v-col>
+            <v-card color="indigo">
+              <v-list>
+                <v-subheader>Selected modules :</v-subheader>
+                <v-list-item v-for="sm in selectedModules">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="sm"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
             </v-card>
-          </div>
+          </v-col>
+        </v-row>
+
+        <div>
+          <!-- SUBMIT BUTTON -->
+          <v-row :align="alignment">
+            <v-btn color="error" @click.prevent="submitted" >Edit</v-btn>
+          </v-row>
+
+          <!-- Prikaz rezultata -->
+          <!-- <v-card v-if="isSubmited">
+            <v-card-text>
+              <v-card-title>Podaci centralnog statea</v-card-title>
+              <p>Selected company : {{feature.selectedCompany}}</p>
+              <div>
+                Odabrani check boxevi su :
+                <ul>
+                  <li v-for="check in feature.selectedModules">{{check}}</li>
+                </ul>
+              </div>
+            </v-card-text>
+          </v-card> -->
+        </div>
         </div>
       </div>
     </div>
@@ -81,7 +79,6 @@
 </template>
 
 <script>
-console.log("pocinje ucitavanje script taga");
 import NProgress from 'nprogress'
 import EventService from '../../services/EventService'
 import { mapState, mapActions } from 'vuex'
@@ -90,13 +87,14 @@ import FeatureDetail from './FeatureDetail'
 export default {
   data() {
     return {
-      companies: [],
+      companies: null,
       modules: [],
       selectedCompany: null,
       radios: 'portal',
       checkBox: [],
       isSubmited: false,
-      selectedModules: []
+      selectedModules: [],
+      alignment: 'center',
     }
   },
   components: {
@@ -119,9 +117,9 @@ export default {
   computed: {
     ...mapState({ feature: 'feature' })
   },
-  mounted() {
-    console.log("mounted")
-    this.companies=this.feature.companies
+  created() {
+    this.companies = this.feature.companies
+    //console.log(this.companies)
     this.modules = this.feature.modules
   },
   methods: {
@@ -129,9 +127,9 @@ export default {
       store.dispatch('feature/selectedCompany', this.selectedCompany)
     },
     //callBack funkcija za event
-    cbHandler(modulesData){
+    cbHandler(modulesData) {
       console.log(modulesData)
-      this.selectedModules=modulesData
+      this.selectedModules = modulesData
     },
     makeObject() {
       return {
