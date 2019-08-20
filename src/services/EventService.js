@@ -53,6 +53,8 @@ export default {
   postEvent(event) {
     return apiClient.post('/events', event)
   },
+
+
   getCompanies(){
     return apiClient.post("Services/WarehouseService.svc/GetSiteCustomers",
     {siteId:57}
@@ -61,6 +63,10 @@ export default {
 
 getFeatures(){
   return serverClient.get('api/features')
+},
+
+getSelectedFeatures(guid){
+  return serverClient.get(`api/features/${guid}`)
 },
 
   editFeatures(dataObject){

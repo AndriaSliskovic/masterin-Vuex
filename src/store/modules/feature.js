@@ -1,13 +1,16 @@
 import EventService from '../../services/EventService'
+import { async } from 'q';
 
 export const namespaced = true
 
 export const state = {
   companies: {},
   selectedCompany:"",
+  groups:{},
+  selectedGroup:"",
   dataObject:{},
   modules:[],
-  selectedModules:[]
+  selectedModules:null
 
 }
 export const mutations = {
@@ -18,11 +21,17 @@ export const mutations = {
     state.modules=payload
   },
   SELECTED_COMPANY(state,payload){
-    //console.log(payload)
+    console.log(payload)
     state.selectedCompany = payload
   },
+  SELECTED_GROUP(state,payload){
+    console.log(payload)
+  },
   SELECTED_MODULES(state,payload){
-    state.selectedModules=payload
+    console.log(payload)
+    state.selectedModules=payload 
+    // state.selectedModules.push(payload)
+    console.log(state.selectedModules)
   },
   SEND_DATA(state,payload){
     //console.log(payload)
@@ -30,8 +39,9 @@ export const mutations = {
   }
 }
 export const actions = {
-  async fetchData({ commit }) {
-    return await EventService.getCompanies()
+  fetchData({ commit }) {
+    //Koristi isti metod za ucitavanja kompanija i grupa
+    return EventService.getCompanies()
       .then(response => {
         commit('UCITAJ_PODATKE', response.data)
       })
@@ -51,8 +61,22 @@ export const actions = {
     })
   },
 
+  getSelectedModules({commit},compGuid){
+     return EventService.getSelectedFeatures(compGuid)
+    .then(response=>{
+      console.log(response.data)
+      commit('SELECTED_MODULES',response.data)
+    })
+    .catch(error=>{
+      console.log(`Error message : ${error.response}`)
+    })
+  },
+
   selectedCompany({commit},company){
     commit('SELECTED_COMPANY',company)
+  },
+  selectedGroup({commit},group){
+    commit('SELECTED_GROUP',group)
   },
   selectedModules({commit},modules){
     console.log(`selected modules : ${modules}`)
