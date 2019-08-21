@@ -16,7 +16,7 @@
                 item-value="CompanyGuid"
                 filled
                 label="Select Company"
-                v-model="selectedCompany"
+                v-model="selectedCompanyGuid"
                 @change="setSelectedCompany"
               ></v-select>
             </v-flex>
@@ -24,14 +24,14 @@
         </v-col>
         <v-col>
           <v-card color="indigo">
-             <v-subheader dark>Selected company :</v-subheader>
-            <v-card-title>{{selectedCompany}}</v-card-title>
+            <v-subheader dark>Selected company :</v-subheader>
+            <v-card-title>{{selectedCompanyGuid}}</v-card-title>
           </v-card>
         </v-col>
       </v-row>
 
       <div>
-        <div v-if="selectedCompany">
+        <div v-if="selectedCompanyGuid">
           <!-- Radio buttons -->
           <div>
             <v-radio-group v-model="radios" :mandatory="false">
@@ -46,14 +46,15 @@
               <!-- Ako je selektovan poratal -->
               <div v-if="radios==='portal'">
                 <FeatureDetail
-                  :moduli="feature.modules"
+                  :allModules="feature.initialModules"
+                  :selectedModules="feature.selectedModules"
                   @updateModules="selectedModules=$event"
-                  :cbFn="cbHandler"
+
                 ></FeatureDetail>
               </div>
               <!-- Ako je selektovana grupa -->
               <div v-if="radios==='group'">
-                <h3>{{selectedCompany}}</h3>
+                <h3>{{selectedCompanyGuid}}</h3>
                 <form>
                   <v-flex xs12 sm6 d-flex data-app>
                     <v-select
@@ -68,27 +69,27 @@
                     ></v-select>
                   </v-flex>
                   <FeatureDetail
-                    :moduli="feature.modules"
+                    :allModules="feature.initialModules"
+                    :selectedModules="feature.selectedModules"
                     @updateModules="selectedModules=$event"
-                    :cbFn="cbHandler"
+
                   ></FeatureDetail>
                 </form>
               </div>
             </v-col>
-            <v-col>
+            <!-- <v-col>
               <v-card>
                 <v-list color="indigo">
                   <v-subheader class="white--text">Selected modules :</v-subheader>
-                  <v-list-item v-for="sm in selectedModules">
+                  <v-list-item v-for="sm in feature.selectedModules">
                     <v-list-item-content>
                       <v-list-item-title v-text="sm" class="white--text"></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
               </v-card>
-            </v-col>
+            </v-col> -->
           </v-row>
-
 
           <!-- SUBMIT BUTTON -->
           <v-row justify="center">
@@ -110,8 +111,8 @@ export default {
   data() {
     return {
       companies: null,
-      modules: [],
-      selectedCompany: null,
+      selectedCompanyGuid: null,
+      modules: null,
       selectedGroup: null,
       radios: null,
       checkBox: [],
@@ -124,13 +125,13 @@ export default {
   },
 
   //Pozivanje actionCreatora kroz komponentni router
-  beforeRouteEnter(routeTo, routeFrom, next) {
+   beforeRouteEnter(routeTo, routeFrom, next) {
     NProgress.start()
     //Ne moze da koristi this
     //Inicijalno ucitava sve kompanije i module
     store
-      .dispatch('feature/fetchData')
-      .then(store.dispatch('feature/fetchModules'))
+      .dispatch('feature/fetchCompanies')
+      .then(store.dispatch('feature/fetchInitialModules'))
       .then(response => {
         NProgress.done() // When the action is done complete progress bar
         next() // Only once this is called does the navigation continue
@@ -141,25 +142,24 @@ export default {
   },
   created() {
     this.companies = this.feature.companies
-    //console.log(this.companies)
-    this.modules = this.feature.modules
   },
-  beforeUpdate() {
+
+  updated() {
     console.log(this.feature.selectedModules, this.selectedGroup, this.radios)
-    this.selectedModules=this.feature.selectedModules
+    //this.modules = this.feature.modules
+    this.selectedModules = this.feature.selectedModules
   },
   methods: {
-    setSelectedCompany() {
-      store.dispatch('feature/selectedCompany', this.selectedCompany)
-      store.dispatch('feature/getSelectedModules',this.selectedCompany)
+    async setSelectedCompany() {
+      await store
+        .dispatch('feature/selectedCompany', this.selectedCompanyGuid)
+        .then(
+          store.dispatch('feature/getSelectedModules', this.selectedCompanyGuid)
+        )
+      //.then(this.selectedModules=this.feature.selectedModules)
     },
     setSelectedGroup() {
       store.dispatch('feature/selectedGroup', this.selectedGroup)
-    },
-    //callBack funkcija za event
-    cbHandler(modulesData) {
-      console.log(modulesData)
-      this.selectedModules = modulesData
     },
     makeObject() {
       var guid = ''

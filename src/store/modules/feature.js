@@ -5,20 +5,19 @@ export const namespaced = true
 
 export const state = {
   companies: {},
-  selectedCompany:"",
   groups:{},
   selectedGroup:"",
   dataObject:{},
-  modules:[],
+  initialModules:null,
   selectedModules:null
 
 }
 export const mutations = {
-  UCITAJ_PODATKE(state, payload) {
+  FETCH_COMPANIES(state, payload) {
     state.companies = payload
   },
-  UCITAJ_MODULE(state, payload){
-    state.modules=payload
+  FETCH_INITIAL_MODULES(state, payload){
+    state.initialModules=payload
   },
   SELECTED_COMPANY(state,payload){
     console.log(payload)
@@ -39,22 +38,22 @@ export const mutations = {
   }
 }
 export const actions = {
-  fetchData({ commit }) {
+  fetchCompanies({ commit }) {
     //Koristi isti metod za ucitavanja kompanija i grupa
     return EventService.getCompanies()
       .then(response => {
-        commit('UCITAJ_PODATKE', response.data)
+        commit('FETCH_COMPANIES', response.data)
       })
       .catch(error => {
         console.log('There was an error:', error.response)
       })
   },
 
-  fetchModules({ commit }){
+  fetchInitialModules({ commit }){
     return EventService.getFeatures()
     .then(response=>{
       //console.log(response.data)
-      commit('UCITAJ_MODULE',response.data)
+      commit('FETCH_INITIAL_MODULES',response.data)
     })
     .catch(error => {
       console.log('There was an error:', error.response)
