@@ -24,8 +24,8 @@
         </v-col>
         <v-col>
           <v-card color="indigo">
-            <v-subheader dark>Selected company :</v-subheader>
-            <v-card-title>{{selectedCompanyGuid}}</v-card-title>
+            <v-subheader dark>Selected options :</v-subheader>
+            <v-card-title>{{selectedCompany.CompanyName}}</v-card-title>
           </v-card>
         </v-col>
       </v-row>
@@ -64,7 +64,7 @@
                       item-value="CompanyGuid"
                       filled
                       label="Select Group"
-                      v-model="selectedGroup"
+                      v-model="selectedGroupGuid"
                       @change="setSelectedGroup"
                     ></v-select>
                   </v-flex>
@@ -112,10 +112,9 @@ export default {
     return {
       companies: null,
       selectedCompanyGuid: null,
-      modules: null,
-      selectedGroup: null,
+      selectedCompany:'',
+      selectedGroupGuid: null,
       radios: null,
-      checkBox: [],
       isSubmited: false,
       selectedModules: []
     }
@@ -138,37 +137,61 @@ export default {
       })
   },
   computed: {
-    ...mapState({ feature: 'feature' })
+    ...mapState({ feature: 'feature' }),
+    getCompany(){
+      if (this.selectedCompanyGuid) {
+      // console.log("imam kompanije",this.companies.SiteCustomersList)
+      const comp=this.companies.SiteCustomersList
+      const company=comp.filter(function(c){
+        return c.CompanyGuid==="74451a04-888f-4fe4-b1ac-c268930b97d6"
+      })
+      store.dispatch('feature/selectedCompanyObject',company[0])
+      }
+    },
+    companyName(){
+      if (this.feature.selectedCompany) {
+       this.selectedCompany=this.feature.selectedCompany
+      }
+    }
   },
   created() {
     this.companies = this.feature.companies
+
   },
 
   updated() {
-    console.log(this.feature.selectedModules, this.selectedGroup, this.radios)
+    // console.log(this.feature.selectedModules, this.selectedGroup, this.radios)
     //this.modules = this.feature.modules
     this.selectedModules = this.feature.selectedModules
   },
   methods: {
-    async setSelectedCompany() {
-      await store
-        .dispatch('feature/selectedCompany', this.selectedCompanyGuid)
+    setSelectedCompany() {
+
+      store.dispatch('feature/cleanModules')
+      this.radios=null
+      store
+        .dispatch('feature/selectedCompanyGuid', this.selectedCompanyGuid)
         .then(
           store.dispatch('feature/getSelectedModules', this.selectedCompanyGuid)
         )
+        .then(this.getCompany)
       //.then(this.selectedModules=this.feature.selectedModules)
     },
     setSelectedGroup() {
-      store.dispatch('feature/selectedGroup', this.selectedGroup)
+      console.log(this.selectedGroupGuid)
+      store.dispatch('feature/cleanModules')
+      store.dispatch('feature/selectedGroupGuid', this.selectedGroupGuid)
+      .then(store.dispatch('feature/getSelectedModules', this.selectedGroupGuid))
+      
     },
     makeObject() {
       var guid = ''
       if (this.radios) {
         console.log('imam radio')
         if (this.radios === 'portal') {
-          this.guid = this.selectedCompany
+          this.guid = this.selectedCompanyGuid
         } else {
-          this.guid = this.selectedGroup
+          this.guid = this.selectedGroupGuid
         }
       } else {
         console.log('nemam radio')

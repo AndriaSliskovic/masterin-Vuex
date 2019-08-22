@@ -14,7 +14,7 @@
         <v-card>
           <v-list color="indigo">
             <v-subheader class="white--text">Initial modules :</v-subheader>
-            <v-list-item v-for="sm in selectedModules">
+            <v-list-item v-for="sm in checkedModules">
               <v-list-item-content>
                 <v-list-item-title v-text="sm" class="white--text"></v-list-item-title>
               </v-list-item-content>
@@ -40,36 +40,42 @@ export default {
     },
     selectedModules: Array
   },
-  methods: {},
-  beforeMount(){
-    this.updateCheckboxes
-  },
-  mounted() {
-    console.log(this.allModules, this.selectedModules, this.checkedModules)
-    //this.updateCheckboxes
-  },
-  //Preko emit ugradjene funkcije
-  updated() {
-    console.log('updejtovano', this.checkedModules)
-    this.$emit('updateModules', this.checkedModules)
-  },
-
-  computed: {
-    ...mapState({ feature: 'feature' }),
+  methods: {
     updateCheckboxes() {
-      console.log(this.allModules, this.checkedModules)
+      // console.log(this.allModules, this.checkedModules)
       var i
       for (i of this.allModules) {
-        console.log(i.name)
+        // console.log(i.name)
         var n
         for (n of this.feature.selectedModules) {
           if (i.name === n) {
-            console.log('imam if', i)
+            // console.log('imam if', i)
             this.checkedModules.push(i.id)
           }
         }
       }
     }
+  },
+  beforeMount(){
+    this.updateCheckboxes()
+  },
+  mounted() {
+    console.log(this.allModules, this.selectedModules, this.checkedModules)
+    if (this.feature.selectedCompanyGuid) {
+      store.dispatch('feature/cleanModules')
+      this.updateCheckboxes()
+    }
+    
+  },
+  //Preko emit ugradjene funkcije
+  updated() {
+    // console.log('updejtovano', this.checkedModules)
+    this.$emit('updateModules', this.checkedModules)
+  },
+
+  computed: {
+    ...mapState({ feature: 'feature' }),
+
   }
 }
 </script>
