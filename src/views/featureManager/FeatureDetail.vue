@@ -1,13 +1,10 @@
 <template>
   <div>
     <v-row>
-      <v-col v-for="mod in allModules" cols="12" sm="4" md="4">
+      <v-col v-for="mod in availableModules" cols="12" sm="4" md="4">
         <v-checkbox
-          v-model="checkedModules"
+          v-model="mod.selected"
           :label="mod.name"
-          color="indigo"
-          :value="mod.id"
-          hide-details
         ></v-checkbox>
       </v-col>
       <v-col>
@@ -26,11 +23,12 @@
   </div>
 </template>
 <script>
+import store from '@/store/store'
 import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      checkedModules: []
+      availableModules : []
     }
   },
 
@@ -41,36 +39,32 @@ export default {
     selectedModules: Array
   },
   methods: {
+    checkedModules : function() {
+        return this.availableModules.filter((e) => e.selected).map((e) => e.id);
+    },
     updateCheckboxes() {
-      // console.log(this.allModules, this.checkedModules)
-      var i
-      for (i of this.allModules) {
-        // console.log(i.name)
-        var n
-        for (n of this.feature.selectedModules) {
-          if (i.name === n) {
-            // console.log('imam if', i)
-            this.checkedModules.push(i.id)
-          }
-        }
-      }
+      console.log(this.allModules, this.checkedModules())
+        const selectedModules = this.feature.selectedModules
+         this.availableModules = this.allModules.map(function(el) {
+          el.selected = selectedModules.includes(el.name) //dodaje se novo svojstvo na osnovu kog ce checkbox biti selektovan. 
+          return el;
+      })
     }
   },
   beforeMount(){
     this.updateCheckboxes()
   },
   mounted() {
-    console.log(this.allModules, this.selectedModules, this.checkedModules)
+    //console.log(this.allModules, this.selectedModules, this.checkedModules)
     if (this.feature.selectedCompanyGuid) {
-      store.dispatch('feature/cleanModules')
+
       this.updateCheckboxes()
     }
     
   },
   //Preko emit ugradjene funkcije
   updated() {
-    // console.log('updejtovano', this.checkedModules)
-    this.$emit('updateModules', this.checkedModules)
+    this.$emit('updateModules', this.checkedModules())
   },
 
   computed: {

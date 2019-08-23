@@ -1,5 +1,6 @@
 import EventService from '../../services/EventService'
 import { async } from 'q';
+import { stat } from 'fs';
 
 export const namespaced = true
 
@@ -7,7 +8,7 @@ export const state = {
   companies: {},
   selectedCompanyGuid:null,
   selectedCompany:null,
-  groups:{},
+  groups:[],
   selectedGroupGuid:"",
   dataObject:{},
   initialModules:null,
@@ -27,6 +28,10 @@ export const mutations = {
   },
   SELECTED_COMPANY_OBJECT(state,payload){
     state.selectedCompany=payload
+  },
+  GET_COMPANY_GROUPS(state,payload){
+    console.log(payload)
+    state.groups=payload
   },
 
   SELECTED_GROUP(state,payload){
@@ -81,9 +86,27 @@ export const actions = {
       console.log(`Error message : ${error.response}`)
     })
   },
+  getCompanyGroups({commit},companyId){
+    console.log(`grupe za kompaniju ${companyId}`)
+    return EventService.getCompanyGroups(companyId)
+   .then(response=>{
+     console.log(`response za kompaniju ${response.data.d}`)
+     var items = response.data.d.map(ug =>  {
+        return {
+          id : ug.COMP_USERGROUP_ID,
+          name : ug.GROUP_NAME,
+          guid : ug.GUID
+        }
+     })
+     console.log(items)
+      commit('GET_COMPANY_GROUPS',items)
+   })
+   .catch(error=>{
+     console.log(`Error message : ${error.response}`)
+   })
+ },
 
   selectedCompanyGuid({commit},companyGuid){
-    console.log('imam action')
     commit('SELECTED_COMPANY_GUID',companyGuid)
   },
   selectedCompanyObject({commit},company){

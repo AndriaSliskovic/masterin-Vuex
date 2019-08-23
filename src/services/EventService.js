@@ -43,6 +43,8 @@ serverClient.interceptors.response.use(response => { // Called on response
   return response
 })
 
+
+
 export default {
   getEvents(perPage, page) {
     return apiClient.get('/events?_limit=' + perPage + '&_page=' + page)
@@ -67,6 +69,16 @@ getFeatures(){
 
 getSelectedFeatures(guid){
   return serverClient.get(`api/features/${guid}`)
+},
+getCompanyGroups(companyId){
+  
+  let searchCriteria= {
+      searchGroupCritera : {
+      COMP_ID : companyId, 
+      ISACTIVE : true
+    }
+  }
+  return apiClient.post('Services/CompanyService.svc/GetUsergroupsForCompany',searchCriteria)
 },
 
   editFeatures(dataObject){

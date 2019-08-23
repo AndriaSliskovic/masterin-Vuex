@@ -1,0 +1,264 @@
+{
+    "d": [
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3522,
+            "GROUP_DESCRIPTION": "2 - parthreshold",
+            "GROUP_NAME": "2 - parthreshold",
+            "GUID": "f943c31d-ae0e-4b58-88a6-d8322eb777b4",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3661,
+            "GROUP_DESCRIPTION": "Stop users at placeorder when spend limit exceeded",
+            "GROUP_NAME": "Approval-Stop",
+            "GUID": "31b1de8b-3a89-4369-940f-1e7c6f2bc944",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 4527,
+            "GROUP_DESCRIPTION": "",
+            "GROUP_NAME": "Approvals-CCbypass",
+            "GUID": "d006474b-d04e-4882-9f08-454f6f20ec5b",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 967,
+            "GROUP_DESCRIPTION": "AU for Demo",
+            "GROUP_NAME": "AU",
+            "GUID": "c962c63b-eb43-4398-b1ac-fcddfcae822f",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 4225,
+            "GROUP_DESCRIPTION": "group spend = .01 to allow users to be able to only order the free items.",
+            "GROUP_NAME": "Budget Group ",
+            "GUID": "7faa6667-e71e-457b-bf7c-9218f54c8b9d",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3862,
+            "GROUP_DESCRIPTION": "Group level budget for Marketing Group of 500 per day",
+            "GROUP_NAME": "Budgeted Marketing Group",
+            "GUID": "9f38f483-73aa-4c6b-8011-f531d0ae3627",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 4017,
+            "GROUP_DESCRIPTION": "",
+            "GROUP_NAME": "Co-Op ONLY",
+            "GUID": "29ee45dc-0021-48f6-ba57-b52366084d76",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 721,
+            "GROUP_DESCRIPTION": "Divisions",
+            "GROUP_NAME": "Division Users",
+            "GUID": "ed5429ae-625e-4555-b92f-4dfee134544c",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 674,
+            "GROUP_DESCRIPTION": "Group level Budget of 500 per xxx time",
+            "GROUP_NAME": "Expir - BudgetedGroup",
+            "GUID": "407c7fae-616d-4db7-ae39-77cd8697193a",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 2728,
+            "GROUP_DESCRIPTION": "",
+            "GROUP_NAME": "LPNT",
+            "GUID": "1bbfabc3-cbb0-4320-8efb-27f088b157e9",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3228,
+            "GROUP_DESCRIPTION": "Order limit 2 per 30 days",
+            "GROUP_NAME": "OrderLimit - Group",
+            "GUID": "2a310eb0-49d8-4cee-90a7-01f4d1180671",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3196,
+            "GROUP_DESCRIPTION": "QA - Test part threshold Approval Trigger",
+            "GROUP_NAME": "Part Threshold",
+            "GUID": "b9612dcb-0dc0-42b6-8b3a-dde6cc4a0dc8",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3722,
+            "GROUP_DESCRIPTION": "part limit Test",
+            "GROUP_NAME": "PartLimit",
+            "GUID": "c13e1c92-2537-4f51-8ee3-0a2b6559f09c",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3721,
+            "GROUP_DESCRIPTION": "PromoCodeGroup",
+            "GROUP_NAME": "PromoCodeGroup",
+            "GUID": "79443f64-213e-4d35-91d1-1bef03082055",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 2462,
+            "GROUP_DESCRIPTION": "QA",
+            "GROUP_NAME": "QA-Group",
+            "GUID": "ea2d9850-2eb9-453a-9928-6327dddb96bd",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 2726,
+            "GROUP_DESCRIPTION": "",
+            "GROUP_NAME": "RBI Group",
+            "GUID": "c1788cfd-b18f-4024-a709-49cacb5ad3dc",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3600,
+            "GROUP_DESCRIPTION": "ScreenDefsFrench",
+            "GROUP_NAME": "ScreenDefsFrench",
+            "GUID": "74fa20cd-3b25-4b47-83af-79492f7a51fb",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3397,
+            "GROUP_DESCRIPTION": "",
+            "GROUP_NAME": "ScreenDefsSample",
+            "GUID": "8a621f93-6209-4b43-bb10-4b799ba66408",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3429,
+            "GROUP_DESCRIPTION": "tester",
+            "GROUP_NAME": "tester",
+            "GUID": "f935b26d-69b6-4cfa-b183-19990b10d609",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 259,
+            "GROUP_DESCRIPTION": "Admin settings - All Products, Bill Later Only, Show Price, Show Inv, Estimate Freight, Yes Consumer, No Sales Tax, Price List Cheap List, Approvals $ and Thresh, Carrier Override",
+            "GROUP_NAME": "UG-ADMIN",
+            "GUID": "12be1114-9bcf-48f2-b742-48c94a87e87d",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 295,
+            "GROUP_DESCRIPTION": "User group for testing of sample university",
+            "GROUP_NAME": "UG-Cumberland",
+            "GUID": "545ad1d1-54bc-479b-97a0-04af19580a60",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 258,
+            "GROUP_DESCRIPTION": "Standard settings - All Products, All Payments, Show Price, Show Inv, Estimate Freight, No Consumer, Sales Tax, Price List Default, Approvals ALL, Carrier Override",
+            "GROUP_NAME": "UG-DEFAULT",
+            "GUID": "5ae53942-42a8-4cf6-9667-c4959e7eddaa",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 260,
+            "GROUP_DESCRIPTION": "Standard settings - Limited Products,Bill Later Only, No Show Price, Show Inv, ACTUAL Freight,Yes Consumer, Price List Default, Approvals ALL, Standard Carrier",
+            "GROUP_NAME": "UG-NOPRICE",
+            "GUID": "be5b0d75-48db-4589-9e55-7c9e8a6f7fc2",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 261,
+            "GROUP_DESCRIPTION": "Standard settings - Limited Products,Bill Later Only, No Show Price,No Show Inv, Estimate Freight, No Consumer, Price List Default, Approvals ALL, Standard Carrier",
+            "GROUP_NAME": "UG-NOPRICE-INV",
+            "GUID": "2185a2fb-9514-44fb-a0ef-cc6ea93cc05c",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3838,
+            "GROUP_DESCRIPTION": "",
+            "GROUP_NAME": "UG-OPENPORTAL",
+            "GUID": "87614957-310d-4b52-bd3c-3ff5462dca8d",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        },
+        {
+            "__type": "CompanyService.CompUserSearch:#Argosy_Administration.Services",
+            "COMP_ID": 238,
+            "COMP_USERGROUP_ID": 3991,
+            "GROUP_DESCRIPTION": "",
+            "GROUP_NAME": "UG-TESTLOADSPEED",
+            "GUID": "e0872512-fee0-4fce-bb7e-a25675a26c7b",
+            "ISACTIVE": true,
+            "IS_RETAIL": false
+        }
+    ]
+}

@@ -13,10 +13,10 @@
                 :items="feature.companies.SiteCustomersList"
                 name="company"
                 item-text="CompanyName"
-                item-value="CompanyGuid"
                 filled
+                return-object
                 label="Select Company"
-                v-model="selectedCompanyGuid"
+                v-model="selectedCompany"
                 @change="setSelectedCompany"
               ></v-select>
             </v-flex>
@@ -31,12 +31,12 @@
       </v-row>
 
       <div>
-        <div v-if="selectedCompanyGuid">
+        <div v-if="selectedCompany">
           <!-- Radio buttons -->
           <div>
             <v-radio-group v-model="radios" :mandatory="false">
               <v-radio label="Portal" value="portal"></v-radio>
-              <v-radio label="User group" value="group"></v-radio>
+              <v-radio label="User group" value="group" @change="userGroupSelected"></v-radio>
             </v-radio-group>
           </div>
           <hr />
@@ -48,7 +48,7 @@
                 <FeatureDetail
                   :allModules="feature.initialModules"
                   :selectedModules="feature.selectedModules"
-                  @updateModules="selectedModules=$event"
+                  @updateModules="idsToDelete=$event"
 
                 ></FeatureDetail>
               </div>
@@ -77,18 +77,7 @@
                 </form>
               </div>
             </v-col>
-            <!-- <v-col>
-              <v-card>
-                <v-list color="indigo">
-                  <v-subheader class="white--text">Selected modules :</v-subheader>
-                  <v-list-item v-for="sm in feature.selectedModules">
-                    <v-list-item-content>
-                      <v-list-item-title v-text="sm" class="white--text"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-card>
-            </v-col> -->
+
           </v-row>
 
           <!-- SUBMIT BUTTON -->
@@ -113,10 +102,12 @@ export default {
       companies: null,
       selectedCompanyGuid: null,
       selectedCompany:'',
+      userGrops:null,
       selectedGroupGuid: null,
       radios: null,
       isSubmited: false,
-      selectedModules: []
+      selectedModules: [],
+      idsToDelete : []
     }
   },
   components: {
@@ -140,12 +131,13 @@ export default {
     ...mapState({ feature: 'feature' }),
     getCompany(){
       if (this.selectedCompanyGuid) {
-      // console.log("imam kompanije",this.companies.SiteCustomersList)
+      console.log("imam kompanije",this.feature.selectedCompanyGuid)
       const comp=this.companies.SiteCustomersList
+      const selectedCompanyGuid=this.feature.selectedCompanyGuid
       const company=comp.filter(function(c){
-        return c.CompanyGuid==="74451a04-888f-4fe4-b1ac-c268930b97d6"
+        return c.CompanyGuid===selectedCompanyGuid
       })
-      store.dispatch('feature/selectedCompanyObject',company[0])
+      store.dispatch('feature/selectedCompanyObject',company[0]) 
       }
     },
     companyName(){
@@ -160,28 +152,28 @@ export default {
   },
 
   updated() {
-    // console.log(this.feature.selectedModules, this.selectedGroup, this.radios)
-    //this.modules = this.feature.modules
     this.selectedModules = this.feature.selectedModules
   },
   methods: {
+    userGroupSelected(){
+      console.log(`selektovana grupa za compId : ${this.selectedCompany.CompanyId}`)
+            store.dispatch('feature/getCompanyGroups',this.selectedCompany.CompanyId)
+    },
     setSelectedCompany() {
-
       store.dispatch('feature/cleanModules')
       this.radios=null
       store
-        .dispatch('feature/selectedCompanyGuid', this.selectedCompanyGuid)
+        .dispatch('feature/selectedCompanyGuid', this.selectedCompany.CompanyGuid)
         .then(
-          store.dispatch('feature/getSelectedModules', this.selectedCompanyGuid)
+          store.dispatch('feature/getSelectedModules', this.selectedCompany.CompanyGuid)
         )
         .then(this.getCompany)
       //.then(this.selectedModules=this.feature.selectedModules)
     },
     setSelectedGroup() {
       console.log(this.selectedGroupGuid)
-      store.dispatch('feature/cleanModules')
-      store.dispatch('feature/selectedGroupGuid', this.selectedGroupGuid)
-      .then(store.dispatch('feature/getSelectedModules', this.selectedGroupGuid))
+
+
       
     },
     makeObject() {
@@ -198,12 +190,12 @@ export default {
       }
       return {
         subscribedEntityId: this.guid,
-        moduleIds: this.selectedModules
+        moduleIds: this.idsToDelete
       }
     },
     submitted() {
       this.isSubmited = true
-      store.dispatch('feature/selectedModules', this.selectedModules)
+      store.dispatch('feature/selectedModules', this.idsToDelete)
       // if (this.radios) {
       //   console.log("imam radio button")
       // } else {
