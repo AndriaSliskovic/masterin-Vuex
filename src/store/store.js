@@ -5,6 +5,7 @@ import * as event from '@/store/modules/event.js'
 import * as proba from '@/store/modules/proba.js'
 import * as tabela from '@/store/modules/tabela.js'
 import * as feature from '@/store/modules/feature.js'
+import * as notification from '@/store/modules/notification.js'
 
 Vue.use(Vuex)
 
@@ -14,7 +15,8 @@ export default new Vuex.Store({
     event,
     proba,
     tabela,
-    feature
+    feature,
+    notification
   },
   state: {
     categories: [

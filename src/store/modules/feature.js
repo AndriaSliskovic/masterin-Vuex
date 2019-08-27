@@ -50,14 +50,19 @@ export const mutations = {
   }
 }
 export const actions = {
-  fetchCompanies({ commit }) {
+  fetchCompanies({ commit,dispatch }) {
     //Koristi isti metod za ucitavanja kompanija i grupa
     return EventService.getCompanies()
       .then(response => {
         commit('FETCH_COMPANIES', response.data)
       })
       .catch(error => {
-        console.log('There was an error :', error.response)
+        const notification={
+          type:'error',
+          message:`Greska na serveru pri ucitavanju kompanija : ${error.response}`
+        }
+        dispatch('notification/add',notification,{root:true})
+        //console.log('There was an error :', error.response)
       })
   },
 
@@ -117,9 +122,25 @@ export const actions = {
   cleanModules({commit}){
     commit('CLEAN_MODULES')
   },
-  submitForm({commit},object){
+  submitForm({commit,dispatch},object){
     commit('SEND_DATA',object)
     return EventService.editFeatures(object)
+    .then(
+      ()=>{
+        const notification={
+          type:'success',
+          message:`Uspesno poslati podaci !`
+        }
+        dispatch('notification/add',notification,{root:true})
+      }).catch(error=>{
+        const notification={
+          type:'error',
+          message:`Neuspesno poslati podaci !`
+        }
+        dispatch('notification/add',notification,{root:true})
+        throw error
+      })
+
   }
 }
 

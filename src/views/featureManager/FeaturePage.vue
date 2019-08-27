@@ -1,14 +1,13 @@
 <template>
   <v-app id="inspire">
     <div>
+      <NotificationContainer/>
       <h3>Feature manager</h3>
+
       <v-row>
         <v-col>
           <form>
             <v-flex xs12 sm6 d-flex data-app>
-              <!-- <select id="company" class="form-control" v-model="selectedCompany" @change="setSelected">
-          <option v-for="company in companies" :key="company.COMPANY_ID">{{ company.COMPANY_NAME }}</option>
-              </select>-->
               <v-select
                 :items="feature.companies.SiteCustomersList"
                 name="company"
@@ -52,7 +51,6 @@
               </div>
               <!-- Ako je selektovana grupa -->
               <div v-if="radios==='group'">
-                <h3>{{subscribedEntityId}}</h3>
                 <form>
                   <v-flex xs12 sm6 d-flex data-app>
                     <v-select
@@ -91,6 +89,8 @@ import EventService from '../../services/EventService'
 import { mapState, mapActions } from 'vuex'
 import store from '@/store/store'
 import FeatureDetail from './FeatureDetail'
+import NotificationContainer from '../../components/NotificationContainer'
+
 export default {
   data() {
     return {
@@ -105,7 +105,8 @@ export default {
     }
   },
   components: {
-    FeatureDetail
+    FeatureDetail,
+    NotificationContainer
   },
 
   //Pozivanje actionCreatora kroz komponentni router
@@ -124,7 +125,12 @@ export default {
   computed: {
     ...mapState({ feature: 'feature' }),
     subscribedEntityId: function() {
-      return this.selectedCompany.CompanyGuid
+      if (this.radios==="portal") {
+        return this.selectedCompany.CompanyGuid
+      } else{
+        return this.selectedGroupGuid
+      }
+ 
     },
     portalId: function() {
       return this.selectedCompany.CompanyId
