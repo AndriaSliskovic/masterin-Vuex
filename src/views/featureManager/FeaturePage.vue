@@ -35,8 +35,8 @@
           <!-- Radio buttons -->
           <div>
             <v-radio-group v-model="radios" :mandatory="false">
-              <v-radio label="Portal" value="portal"></v-radio>
-              <v-radio label="User group" value="group" @change="userGroupSelected"></v-radio>
+              <v-radio label="Portal" value="portal" @change="portalIsSelected"></v-radio>
+              <v-radio label="User group" value="group" @change="userGroupIsSelected"></v-radio>
             </v-radio-group>
           </div>
           <hr />
@@ -46,22 +46,20 @@
               <!-- Ako je selektovan poratal -->
               <div v-if="radios==='portal'">
                 <FeatureDetail
-                  :allModules="feature.initialModules"
-                  :selectedModules="feature.selectedModules"
-                  @updateModules="idsToDelete=$event"
-
+                  :renderModules="renderModules"
+                  @updateModules="subscribedFeatureNames=$event"
                 ></FeatureDetail>
               </div>
               <!-- Ako je selektovana grupa -->
               <div v-if="radios==='group'">
-                <h3>{{selectedCompanyGuid}}</h3>
+                <h3>{{subscribedEntityId}}</h3>
                 <form>
                   <v-flex xs12 sm6 d-flex data-app>
                     <v-select
-                      :items="feature.companies.SiteCustomersList"
+                      :items="feature.groups"
                       name="group"
-                      item-text="CompanyName"
-                      item-value="CompanyGuid"
+                      item-text="name"
+                      item-value="guid"
                       filled
                       label="Select Group"
                       v-model="selectedGroupGuid"
@@ -69,15 +67,12 @@
                     ></v-select>
                   </v-flex>
                   <FeatureDetail
-                    :allModules="feature.initialModules"
-                    :selectedModules="feature.selectedModules"
-                    @updateModules="selectedModules=$event"
-
+                    :renderModules="renderModules"
+                    @updateModules="subscribedFeatureNames=$event"
                   ></FeatureDetail>
                 </form>
               </div>
             </v-col>
-
           </v-row>
 
           <!-- SUBMIT BUTTON -->
@@ -100,14 +95,13 @@ export default {
   data() {
     return {
       companies: null,
-      selectedCompanyGuid: null,
-      selectedCompany:'',
-      userGrops:null,
+      subscribedFeatureNames: [],
+      renderModules: [],
+      selectedCompany: '',
+      userGrops: null,
       selectedGroupGuid: null,
       radios: null,
-      isSubmited: false,
-      selectedModules: [],
-      idsToDelete : []
+      isSubmited: false
     }
   },
   components: {
@@ -115,7 +109,7 @@ export default {
   },
 
   //Pozivanje actionCreatora kroz komponentni router
-   beforeRouteEnter(routeTo, routeFrom, next) {
+  beforeRouteEnter(routeTo, routeFrom, next) {
     NProgress.start()
     //Ne moze da koristi this
     //Inicijalno ucitava sve kompanije i module
@@ -129,81 +123,85 @@ export default {
   },
   computed: {
     ...mapState({ feature: 'feature' }),
-    getCompany(){
-      if (this.selectedCompanyGuid) {
-      console.log("imam kompanije",this.feature.selectedCompanyGuid)
-      const comp=this.companies.SiteCustomersList
-      const selectedCompanyGuid=this.feature.selectedCompanyGuid
-      const company=comp.filter(function(c){
-        return c.CompanyGuid===selectedCompanyGuid
-      })
-      store.dispatch('feature/selectedCompanyObject',company[0]) 
-      }
+    subscribedEntityId: function() {
+      return this.selectedCompany.CompanyGuid
     },
-    companyName(){
-      if (this.feature.selectedCompany) {
-       this.selectedCompany=this.feature.selectedCompany
-      }
+    portalId: function() {
+      return this.selectedCompany.CompanyId
     }
   },
   created() {
     this.companies = this.feature.companies
-
   },
 
   updated() {
-    this.selectedModules = this.feature.selectedModules
+    this.subscribedFeatureNames = this.feature.selectedModules
   },
   methods: {
-    userGroupSelected(){
-      console.log(`selektovana grupa za compId : ${this.selectedCompany.CompanyId}`)
-            store.dispatch('feature/getCompanyGroups',this.selectedCompany.CompanyId)
+    userGroupIsSelected() {
+      store.dispatch('feature/getCompanyGroups', this.selectedCompany.CompanyId)
+      store.dispatch('feature/cleanModules')
+      this.initialModuleIsSelected()
+
+    },
+    portalIsSelected() {
+      store.dispatch('feature/cleanModules')
+      store
+        .dispatch(
+          'feature/getSelectedModules',
+          this.selectedCompany.CompanyGuid
+        )
+        .then(() => {
+          this.initialModuleIsSelected()
+ 
+        })
     },
     setSelectedCompany() {
-      store.dispatch('feature/cleanModules')
-      this.radios=null
-      store
-        .dispatch('feature/selectedCompanyGuid', this.selectedCompany.CompanyGuid)
-        .then(
-          store.dispatch('feature/getSelectedModules', this.selectedCompany.CompanyGuid)
-        )
-        .then(this.getCompany)
-      //.then(this.selectedModules=this.feature.selectedModules)
+      //store.dispatch('feature/cleanModules')
+      this.radios = null
+      store.dispatch(
+        'feature/selectedCompanyGuid',
+        this.selectedCompany.CompanyGuid
+      )
     },
     setSelectedGroup() {
-      console.log(this.selectedGroupGuid)
+      store
+        .dispatch('feature/getSelectedModules', this.selectedGroupGuid)
+        .then(() => {
+          this.initialModuleIsSelected()
 
-
-      
+        })
     },
-    makeObject() {
-      var guid = ''
-      if (this.radios) {
-        console.log('imam radio')
-        if (this.radios === 'portal') {
-          this.guid = this.selectedCompanyGuid
-        } else {
-          this.guid = this.selectedGroupGuid
-        }
-      } else {
-        console.log('nemam radio')
+    initialModuleIsSelected() {
+
+      const initialModules = this.feature.initialModules
+      const selModules = this.feature.selectedModules
+      if (selModules) {
+              this.renderModules = initialModules.map(function(el) {
+        el.selected = selModules.includes(el.name) //dodaje se novo svojstvo na osnovu kog ce checkbox biti selektovan.
+        return el
+      })
+      }else{
+        //Koristi se da ponisti checkboxeve
+        const selModules=[]
+        this.renderModules = initialModules.map(function(el) {
+        el.selected = selModules.includes(el.name) //dodaje se novo svojstvo na osnovu kog ce checkbox biti selektovan.
+        return el
+      })
       }
+
+    },
+
+    makeObject() {
       return {
-        subscribedEntityId: this.guid,
-        moduleIds: this.idsToDelete
+        subscribedEntityId: this.subscribedEntityId,
+        moduleIds: this.subscribedFeatureNames
       }
     },
     submitted() {
       this.isSubmited = true
-      store.dispatch('feature/selectedModules', this.idsToDelete)
-      // if (this.radios) {
-      //   console.log("imam radio button")
-      // } else {
-      //   //Errror handler
-      //   console.log('morate odabrati bar jedan radio button')
-      // }
-      var objekat = this.makeObject()
-      store.dispatch('feature/submitForm', objekat)
+      store.dispatch('feature/selectedModules', this.subscribedFeatureNames)
+      store.dispatch('feature/submitForm', this.makeObject())
     }
   }
 }

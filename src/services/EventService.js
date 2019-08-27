@@ -71,7 +71,7 @@ getSelectedFeatures(guid){
   return serverClient.get(`api/features/${guid}`)
 },
 getCompanyGroups(companyId){
-  
+  //console.log(companyId)
   let searchCriteria= {
       searchGroupCritera : {
       COMP_ID : companyId, 

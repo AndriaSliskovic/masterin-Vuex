@@ -30,7 +30,6 @@ export const mutations = {
     state.selectedCompany=payload
   },
   GET_COMPANY_GROUPS(state,payload){
-    console.log(payload)
     state.groups=payload
   },
 
@@ -40,16 +39,13 @@ export const mutations = {
 
   },
   SELECTED_MODULES(state,payload){
-    // console.log(payload)
     state.selectedModules=payload 
-    // state.selectedModules.push(payload)
-    // console.log(state.selectedModules)
   },
   CLEAN_MODULES(state){
     state.selectedModules=null
   },
   SEND_DATA(state,payload){
-    //console.log(payload)
+    console.log(payload)
     state.dataObject=payload
   }
 }
@@ -61,7 +57,7 @@ export const actions = {
         commit('FETCH_COMPANIES', response.data)
       })
       .catch(error => {
-        console.log('There was an error:', error.response)
+        console.log('There was an error :', error.response)
       })
   },
 
@@ -87,10 +83,10 @@ export const actions = {
     })
   },
   getCompanyGroups({commit},companyId){
-    console.log(`grupe za kompaniju ${companyId}`)
+    //console.log(`grupe za kompaniju ${companyId}`)
     return EventService.getCompanyGroups(companyId)
    .then(response=>{
-     console.log(`response za kompaniju ${response.data.d}`)
+     //console.log(`response za kompaniju ${response.data.d}`)
      var items = response.data.d.map(ug =>  {
         return {
           id : ug.COMP_USERGROUP_ID,
@@ -98,7 +94,7 @@ export const actions = {
           guid : ug.GUID
         }
      })
-     console.log(items)
+     //console.log(items)
       commit('GET_COMPANY_GROUPS',items)
    })
    .catch(error=>{
@@ -116,14 +112,12 @@ export const actions = {
     commit('SELECTED_GROUP',group)
   },
   selectedModules({commit},modules){
-    console.log(`selected modules : ${modules}`)
     commit('SELECTED_MODULES',modules)
   },
   cleanModules({commit}){
     commit('CLEAN_MODULES')
   },
   submitForm({commit},object){
-    console.log(object)
     commit('SEND_DATA',object)
     return EventService.editFeatures(object)
   }
