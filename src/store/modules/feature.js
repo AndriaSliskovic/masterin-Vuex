@@ -7,9 +7,7 @@ export const namespaced = true
 export const state = {
   companies: {},
   selectedCompanyGuid:null,
-  selectedCompany:null,
   groups:[],
-  selectedGroupGuid:"",
   dataObject:{},
   initialModules:null,
   selectedModules:null
@@ -26,17 +24,8 @@ export const mutations = {
     // console.log(payload)
     state.selectedCompanyGuid = payload
   },
-  SELECTED_COMPANY_OBJECT(state,payload){
-    state.selectedCompany=payload
-  },
   GET_COMPANY_GROUPS(state,payload){
     state.groups=payload
-  },
-
-  SELECTED_GROUP(state,payload){
-    console.log(`selektovana grupa ${payload}`)
-    state.selectedGroupGuid=payload
-
   },
   SELECTED_MODULES(state,payload){
     state.selectedModules=payload 
@@ -59,17 +48,15 @@ export const actions = {
       .catch(error => {
         const notification={
           type:'error',
-          message:`Greska na serveru pri ucitavanju kompanija : ${error.response}`
+          message:`Error on server side ! : ${error.response}`
         }
         dispatch('notification/add',notification,{root:true})
-        //console.log('There was an error :', error.response)
       })
   },
 
   fetchInitialModules({ commit }){
     return EventService.getFeatures()
     .then(response=>{
-      //console.log(response.data)
       commit('FETCH_INITIAL_MODULES',response.data)
     })
     .catch(error => {
@@ -80,7 +67,6 @@ export const actions = {
   getSelectedModules({commit},compGuid){
      return EventService.getSelectedFeatures(compGuid)
     .then(response=>{
-      // console.log(response.data)
       commit('SELECTED_MODULES',response.data)
     })
     .catch(error=>{
@@ -88,10 +74,8 @@ export const actions = {
     })
   },
   getCompanyGroups({commit},companyId){
-    //console.log(`grupe za kompaniju ${companyId}`)
     return EventService.getCompanyGroups(companyId)
    .then(response=>{
-     //console.log(`response za kompaniju ${response.data.d}`)
      var items = response.data.d.map(ug =>  {
         return {
           id : ug.COMP_USERGROUP_ID,
@@ -99,7 +83,6 @@ export const actions = {
           guid : ug.GUID
         }
      })
-     //console.log(items)
       commit('GET_COMPANY_GROUPS',items)
    })
    .catch(error=>{
@@ -129,13 +112,13 @@ export const actions = {
       ()=>{
         const notification={
           type:'success',
-          message:`Uspesno poslati podaci !`
+          message:`Data successfully changed !`
         }
         dispatch('notification/add',notification,{root:true})
       }).catch(error=>{
         const notification={
           type:'error',
-          message:`Neuspesno poslati podaci !`
+          message:`Failed to send data !`
         }
         dispatch('notification/add',notification,{root:true})
         throw error

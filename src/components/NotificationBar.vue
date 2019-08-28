@@ -1,7 +1,7 @@
  <template>
-  <div class="notification-bar" :class="notificationTypeClass">
+    <v-alert :type="messageType" >
     <p>{{ notification.message }}</p>
-  </div>
+    </v-alert>
 </template>
     
     <script>
@@ -9,7 +9,8 @@ import { mapActions } from 'vuex'
 export default {
   data() {
     return {
-      timeout: null
+      timeout: null,
+      messageType:this.notification.type
     }
   },
   mounted() {
@@ -29,7 +30,7 @@ export default {
   methods: mapActions('notification', ['remove']),
   computed: {
     notificationTypeClass() {
-      return `-text-${this.notification.type}`
+      return `text-${this.notification.type}`
     }
   }
 }

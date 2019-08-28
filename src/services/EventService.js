@@ -1,9 +1,17 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 
+if(apiGatewayUrl == null) {
+  var apiGatewayUrl = "http://localhost:5100"
+}
+
+if(appUrl == null) {
+  var appUrl = "http://dev-admin.deluxebrand.com/"
+}
+
 //Povezivanje preko json-servera
 const apiClient = axios.create({
-  baseURL: `http://dev-admin.deluxebrand.com/`,
+  baseURL: appUrl,
   withCredentials: false, // This is the default
   headers: {
     Accept: 'application/json',
@@ -14,7 +22,7 @@ const apiClient = axios.create({
 
 //Povezivanje sa serverom
 const serverClient=axios.create({
-  baseURL: `http://localhost:5100`,
+  baseURL: apiGatewayUrl,
   withCredentials: false, // This is the default
   headers: {
     Accept: 'application/json',
@@ -43,8 +51,6 @@ serverClient.interceptors.response.use(response => { // Called on response
   return response
 })
 
-
-
 export default {
   getEvents(perPage, page) {
     return apiClient.get('/events?_limit=' + perPage + '&_page=' + page)
@@ -55,7 +61,6 @@ export default {
   postEvent(event) {
     return apiClient.post('/events', event)
   },
-
 
   getCompanies(){
     return apiClient.post("Services/WarehouseService.svc/GetSiteCustomers",

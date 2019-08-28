@@ -1,81 +1,83 @@
 <template>
   <v-app id="inspire">
     <div>
-      <NotificationContainer/>
+      <NotificationContainer />
       <h3>Feature manager</h3>
-
-      <v-row>
-        <v-col>
-          <form>
-            <v-flex xs12 sm6 d-flex data-app>
-              <v-select
-                :items="feature.companies.SiteCustomersList"
-                name="company"
-                item-text="CompanyName"
-                filled
-                return-object
-                label="Select Company"
-                v-model="selectedCompany"
-                @change="setSelectedCompany"
-              ></v-select>
-            </v-flex>
-          </form>
-        </v-col>
-        <v-col>
-          <v-card color="indigo">
-            <v-subheader dark>Selected options :</v-subheader>
-            <v-card-title>{{selectedCompany.CompanyName}}</v-card-title>
-          </v-card>
-        </v-col>
-      </v-row>
+      <v-col>
+        <form>
+          <v-flex xs12 sm6 d-flex data-app>
+            <v-select
+              :items="feature.companies.SiteCustomersList"
+              name="company"
+              item-text="CompanyName"
+              filled
+              return-object
+              label="Company"
+              hint="Select company"
+              persistent-hint
+              v-model="selectedCompany"
+              @change="setSelectedCompany"
+            ></v-select>
+          </v-flex>
+        </form>
+      </v-col>
+      <v-col>
+        <!-- Select options -->
+        <v-flex xs12 sm6 d-flex data-app>
+          <v-select
+            :items="selectOption"
+            name="group"
+            item-text="name"
+            item-value="key"
+            filled
+            label="Settings"
+            hint="Select portal or user group"
+            persistent-hint
+            v-model="options"
+            @change="setSelectedSettings"
+            :disabled="disabledSelectSettings"
+          ></v-select>
+        </v-flex>
+      </v-col>
 
       <div>
         <div v-if="selectedCompany">
-          <!-- Radio buttons -->
-          <div>
-            <v-radio-group v-model="radios" :mandatory="false">
-              <v-radio label="Portal" value="portal" @change="portalIsSelected"></v-radio>
-              <v-radio label="User group" value="group" @change="userGroupIsSelected"></v-radio>
-            </v-radio-group>
-          </div>
-          <hr />
-
-          <v-row>
-            <v-col>
-              <!-- Ako je selektovan poratal -->
-              <div v-if="radios==='portal'">
+          <v-col>
+            <!-- Ako je selektovan poratal -->
+            <div v-if="options==='portal'">
+              <FeatureDetail
+                :renderModules="renderModules"
+                @updateModules="subscribedFeatureNames=$event"
+              ></FeatureDetail>
+            </div>
+            <!-- Ako je selektovana grupa -->
+            <div v-if="options==='group'">
+              <form>
+                <v-flex xs12 sm6 d-flex data-app>
+                  <v-select
+                    :items="feature.groups"
+                    name="group"
+                    item-text="name"
+                    item-value="guid"
+                    filled
+                    label="User Groups"
+                    hint="Select a user group"
+                    persistent-hint
+                    v-model="selectedGroupGuid"
+                    @change="setSelectedGroup"
+                  ></v-select>
+                </v-flex>
                 <FeatureDetail
                   :renderModules="renderModules"
                   @updateModules="subscribedFeatureNames=$event"
                 ></FeatureDetail>
-              </div>
-              <!-- Ako je selektovana grupa -->
-              <div v-if="radios==='group'">
-                <form>
-                  <v-flex xs12 sm6 d-flex data-app>
-                    <v-select
-                      :items="feature.groups"
-                      name="group"
-                      item-text="name"
-                      item-value="guid"
-                      filled
-                      label="Select Group"
-                      v-model="selectedGroupGuid"
-                      @change="setSelectedGroup"
-                    ></v-select>
-                  </v-flex>
-                  <FeatureDetail
-                    :renderModules="renderModules"
-                    @updateModules="subscribedFeatureNames=$event"
-                  ></FeatureDetail>
-                </form>
-              </div>
-            </v-col>
-          </v-row>
+              </form>
+            </div>
+          </v-col>
 
           <!-- SUBMIT BUTTON -->
           <v-row justify="center">
-            <v-btn color="error" @click.prevent="submitted">Submit</v-btn>
+            <v-btn color="error" @click.prevent="submitted" :disabled="disabledButton">Save</v-btn>
           </v-row>
         </div>
       </div>
@@ -97,23 +99,28 @@ export default {
       companies: null,
       subscribedFeatureNames: [],
       renderModules: [],
-      selectedCompany: '',
-      userGrops: null,
+      selectedCompany: null,
       selectedGroupGuid: null,
-      radios: null,
-      isSubmited: false
+      options: null,
+      isSubmited: false,
+      selectOption: [
+        {
+          key: 'portal',
+          name: 'Portal'
+        },
+        {
+          key: 'group',
+          name: 'User Group'
+        }
+      ]
     }
   },
   components: {
     FeatureDetail,
     NotificationContainer
   },
-
-  //Pozivanje actionCreatora kroz komponentni router
   beforeRouteEnter(routeTo, routeFrom, next) {
     NProgress.start()
-    //Ne moze da koristi this
-    //Inicijalno ucitava sve kompanije i module
     store
       .dispatch('feature/fetchCompanies')
       .then(store.dispatch('feature/fetchInitialModules'))
@@ -125,15 +132,20 @@ export default {
   computed: {
     ...mapState({ feature: 'feature' }),
     subscribedEntityId: function() {
-      if (this.radios==="portal") {
+      if (this.options === 'portal') {
         return this.selectedCompany.CompanyGuid
-      } else{
+      } else {
         return this.selectedGroupGuid
       }
- 
     },
     portalId: function() {
       return this.selectedCompany.CompanyId
+    },
+    disabledButton: function() {
+      return !this.options
+    },
+    disabledSelectSettings: function() {
+      return !this.selectedCompany
     }
   },
   created() {
@@ -148,7 +160,6 @@ export default {
       store.dispatch('feature/getCompanyGroups', this.selectedCompany.CompanyId)
       store.dispatch('feature/cleanModules')
       this.initialModuleIsSelected()
-
     },
     portalIsSelected() {
       store.dispatch('feature/cleanModules')
@@ -159,43 +170,51 @@ export default {
         )
         .then(() => {
           this.initialModuleIsSelected()
- 
         })
     },
     setSelectedCompany() {
       //store.dispatch('feature/cleanModules')
-      this.radios = null
+      this.options = null
       store.dispatch(
         'feature/selectedCompanyGuid',
         this.selectedCompany.CompanyGuid
       )
+    },
+    setSelectedSettings() {
+      switch (this.options) {
+        case 'portal':
+          this.portalIsSelected()
+          break
+        case 'group':
+          this.userGroupIsSelected()
+          break
+        default:
+          this.options = null
+          break
+      }
     },
     setSelectedGroup() {
       store
         .dispatch('feature/getSelectedModules', this.selectedGroupGuid)
         .then(() => {
           this.initialModuleIsSelected()
-
         })
     },
     initialModuleIsSelected() {
-
       const initialModules = this.feature.initialModules
       const selModules = this.feature.selectedModules
       if (selModules) {
-              this.renderModules = initialModules.map(function(el) {
-        el.selected = selModules.includes(el.name) //dodaje se novo svojstvo na osnovu kog ce checkbox biti selektovan.
-        return el
-      })
-      }else{
-        //Koristi se da ponisti checkboxeve
-        const selModules=[]
         this.renderModules = initialModules.map(function(el) {
-        el.selected = selModules.includes(el.name) //dodaje se novo svojstvo na osnovu kog ce checkbox biti selektovan.
-        return el
-      })
+          el.selected = selModules.includes(el.name) //dodaje se novo svojstvo na osnovu kog ce checkbox biti selektovan.
+          return el
+        })
+      } else {
+        const selModules = []
+        this.renderModules = initialModules.map(function(el) {
+          el.selected = selModules.includes(el.name)
+          return el
+        })
       }
-
     },
 
     makeObject() {
