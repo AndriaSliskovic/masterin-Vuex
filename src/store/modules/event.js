@@ -1,4 +1,4 @@
-import EventService from '@/services/EventService.js'
+import jsonServer from '@/services/jsonServer.js'
 
 export const namespaced = true
 
@@ -26,12 +26,12 @@ export const mutations = {
 
 export const actions = {
   createEvent({ commit }, event) {
-    return EventService.postEvent(event).then(() => {
+    return jsonServer.postEvent(event).then(() => {
       commit('ADD_EVENT', event)
     })
   },
   fetchEvents({ commit,dispatch,state }, { page }) {
-    return EventService.getEvents(state.perPage, page)
+    return jsonServer.getEvents(state.perPage, page)
       .then(response => {
         console.log(response.data)
         commit('SET_EVENTS_TOTAL', parseInt(response.headers['x-total-count']))
@@ -47,7 +47,7 @@ export const actions = {
     if (event) {
       commit('SET_EVENT', event)
     } else {
-      return EventService.getEvent(id)
+      return jsonServer.getEvent(id)
         .then(response => {
           commit('SET_EVENT', response.data)
         })

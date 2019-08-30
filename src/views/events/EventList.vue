@@ -1,14 +1,16 @@
 <template>
   <BaseLayer>
     <h1>Events for {{ user.user.name }}</h1>
-    <EventCard v-for="event in event.events" :key="event.id" :event="event"/>
+    <EventCard v-for="event in event.events" :key="event.id" :event="event" />
     <template v-if="page != 1">
-      <router-link :to="{ name: 'event-list', query: { page: page - 1 } }" rel="prev">
-      Prev Page</router-link>
-      <template v-if="hasNextPage"> | </template>
+      <router-link :to="{ name: 'event-list', query: { page: page - 1 } }" rel="prev">Prev Page</router-link>
+      <template v-if="hasNextPage">|</template>
     </template>
-    <router-link v-if="hasNextPage" :to="{ name: 'event-list', query: { page: page + 1 } }" rel="next">
-      Next Page</router-link>
+    <router-link
+      v-if="hasNextPage"
+      :to="{ name: 'event-list', query: { page: page + 1 } }"
+      rel="next"
+    >Next Page</router-link>
   </BaseLayer>
 </template>
 
@@ -19,43 +21,46 @@ import store from '@/store/store'
 
 // Funkcija koja sluzi za dobijanje stranice na kojoj se nalazi
 // Moved the current page & action call outside the component
-    function getPageEvents(routeTo, next) {  
-      const currentPage = parseInt(routeTo.query.page || 1)
-      store
-        .dispatch('event/fetchEvents', {
-          page: currentPage
-        })
-        .then(() => {
-          // pass it into the component as a prop, so we can print next pages
-          routeTo.params.page = currentPage
-          next()
-        })
-    }
+function getPageEvents(routeTo, next) {
+  const currentPage = parseInt(routeTo.query.page || 1)
+  store
+    .dispatch('event/fetchEvents', {
+      page: currentPage
+    })
+    .then(() => {
+      // pass it into the component as a prop, so we can print next pages
+      routeTo.params.page = currentPage
+      next()
+    })
+}
 
 export default {
   //Definisanje propsa kako bi znali na kojoj se stranici nalazimo
-      props: {
-        page: { // current page gets passed in as a prop
-          type: Number,
-          required: true
-        }
-      },
-      components: {
-        EventCard
-      },
-      //Definisanje ucitavanja podataka pre nego sto se izvrsi ruta
-      beforeRouteEnter(routeTo, routeFrom, next) { // Before we enter the route
-        // Pzivanje gornje funkcije
-        getPageEvents(routeTo, next)
-      },
-      beforeRouteUpdate(routeTo, routeFrom, next) { // Before we update the route
-        getPageEvents(routeTo, next)
-      },
-      computed: {
-        hasNextPage() {
-          return this.event.eventsTotal > this.page * this.event.perPage
-        },
-        ...mapState(['event', 'user'])
-      }
+  props: {
+    page: {
+      // current page gets passed in as a prop
+      type: Number,
+      required: true
     }
+  },
+  components: {
+    EventCard
+  },
+  //Definisanje ucitavanja podataka pre nego sto se izvrsi ruta
+  beforeRouteEnter(routeTo, routeFrom, next) {
+    // Before we enter the route
+    // Pzivanje gornje funkcije
+    getPageEvents(routeTo, next)
+  },
+  beforeRouteUpdate(routeTo, routeFrom, next) {
+    // Before we update the route
+    getPageEvents(routeTo, next)
+  },
+  computed: {
+    hasNextPage() {
+      return this.event.eventsTotal > this.page * this.event.perPage
+    },
+    ...mapState(['event', 'user'])
+  }
+}
 </script>

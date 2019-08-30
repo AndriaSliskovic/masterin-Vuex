@@ -5,6 +5,7 @@ module.exports = {
       splitChunks: false
     }
   },
+  
   filenameHashing: false,
   pages: {
     main: {

@@ -28,6 +28,7 @@ export const mutations = {
     state.groups=payload
   },
   SELECTED_MODULES(state,payload){
+    console.log(`selektovani moduli ${payload}`)
     state.selectedModules=payload 
   },
   CLEAN_MODULES(state){

@@ -146,6 +146,21 @@ export default {
     },
     disabledSelectSettings: function() {
       return !this.selectedCompany
+    },
+    subscribedFeatureIds:function(){
+      let names=this.feature.selectedModules
+      let modules=this.feature.initialModules
+      
+      return modules.filter(x => names.includes(x.name)).map(x => {
+        return x.id
+      })
+
+      //return modules
+    },
+    subscribedEntitys:function(){
+      const names=this.feature.selectedModules
+      const modules=this.feature.initialModules
+
     }
   },
   created() {
