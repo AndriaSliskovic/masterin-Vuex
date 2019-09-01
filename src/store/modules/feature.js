@@ -1,6 +1,5 @@
 import EventService from '../../services/EventService'
-import { async } from 'q';
-import { stat } from 'fs';
+import jsonServer from '../../services/jsonServer'
 
 export const namespaced = true
 
