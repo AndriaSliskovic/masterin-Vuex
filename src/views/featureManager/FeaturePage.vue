@@ -45,10 +45,7 @@
           <v-col>
             <!-- Ako je selektovan poratal -->
             <div v-if="options==='portal'">
-              <FeatureDetail
-                :renderModules="renderModules"
-                @updateModules="subscribedFeatureNames=$event"
-              ></FeatureDetail>
+              <FeatureDetail :renderModules="renderModules" @updateModules="featuresIds=$event"></FeatureDetail>
             </div>
             <!-- Ako je selektovana grupa -->
             <div v-if="options==='group'">
@@ -67,10 +64,7 @@
                     @change="setSelectedGroup"
                   ></v-select>
                 </v-flex>
-                <FeatureDetail
-                  :renderModules="renderModules"
-                  @updateModules="subscribedFeatureNames=$event"
-                ></FeatureDetail>
+                <FeatureDetail :renderModules="renderModules" @updateModules="featuresIds=$event"></FeatureDetail>
               </form>
             </div>
           </v-col>
@@ -97,7 +91,7 @@ export default {
   data() {
     return {
       companies: null,
-      subscribedFeatureNames: [],
+      featuresIds: [],
       renderModules: [],
       selectedCompany: null,
       selectedGroupGuid: null,
@@ -147,34 +141,40 @@ export default {
     disabledSelectSettings: function() {
       return !this.selectedCompany
     },
-    subscribedFeatureIds:function(){
-      let names=this.feature.selectedModules
-      let modules=this.feature.initialModules
-      
-      return modules.filter(x => names.includes(x.name)).map(x => {
-        return x.id
-      })
+    subscribedFeatureIds: function() {
+      let names = this.feature.selectedModules
+      let modules = this.feature.initialModules
+
+      return modules
+        .filter(x => names.includes(x.name))
+        .map(x => {
+          return x.id
+        })
 
       //return modules
-    },
-    subscribedEntitys:function(){
-      const names=this.feature.selectedModules
-      const modules=this.feature.initialModules
-
     }
   },
   created() {
     this.companies = this.feature.companies
   },
 
-  updated() {
-    this.subscribedFeatureNames = this.feature.selectedModules
-  },
+  updated() {},
   methods: {
     userGroupIsSelected() {
       store.dispatch('feature/getCompanyGroups', this.selectedCompany.CompanyId)
-      store.dispatch('feature/cleanModules')
-      this.initialModuleIsSelected()
+      if (this.selectedGroupGuid) {
+        console.log('imam guid')
+        store.dispatch('feature/cleanModules')
+        store
+          .dispatch('feature/getSelectedModules', this.selectedGroupGuid)
+          .then(() => {
+            this.initialModuleIsSelected()
+          })
+      } else {
+        store.dispatch('feature/cleanModules').then(() => {
+          this.initialModuleIsSelected()
+        })
+      }
     },
     portalIsSelected() {
       store.dispatch('feature/cleanModules')
@@ -188,8 +188,11 @@ export default {
         })
     },
     setSelectedCompany() {
-      //store.dispatch('feature/cleanModules')
       this.options = null
+      //Clearing user group guid
+      this.selectedGroupGuid=null
+      //Clearing modules
+      store.dispatch('feature/cleanModules')
       store.dispatch(
         'feature/selectedCompanyGuid',
         this.selectedCompany.CompanyGuid
@@ -235,13 +238,17 @@ export default {
     makeObject() {
       return {
         subscribedEntityId: this.subscribedEntityId,
-        moduleIds: this.subscribedFeatureNames
+        moduleIds: this.featuresIds
       }
     },
     submitted() {
       this.isSubmited = true
-      store.dispatch('feature/selectedModules', this.subscribedFeatureNames)
+      store.dispatch('feature/selectedModules', this.featuresIds)
       store.dispatch('feature/submitForm', this.makeObject())
+      //this.reloadPage()
+    },
+    reloadPage() {
+      window.location.reload()
     }
   }
 }

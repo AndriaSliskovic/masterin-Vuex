@@ -28,7 +28,7 @@ export const mutations = {
     state.groups=payload
   },
   SELECTED_MODULES(state,payload){
-    console.log(`selektovani moduli ${payload}`)
+    //console.log(`selektovani moduli ${payload}`)
     state.selectedModules=payload 
   },
   CLEAN_MODULES(state){
@@ -44,6 +44,7 @@ export const actions = {
     //Koristi isti metod za ucitavanja kompanija i grupa
     return EventService.getCompanies()
       .then(response => {
+        //console.log(response.data)
         commit('FETCH_COMPANIES', response.data)
       })
       .catch(error => {

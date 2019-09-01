@@ -36,17 +36,17 @@ export default {
   },
 
   getCompanies(){
-    return apiClient.post("Services/WarehouseService.svc/GetSiteCustomers",
+    return apiClient.post("/SiteCustomersList",
     {siteId:57}
     )
   },
 
 getFeatures(){
-  return serverClient.get('/feature-manager/features')
+  return serverClient.get('/features')
 },
 
 getSelectedFeatures(guid){
-  return serverClient.get(`/feature-manager/features/${guid}`)
+  return serverClient.get(`/features/${guid}`)
 },
 
 getCompanyGroups(companyId){
@@ -57,11 +57,11 @@ getCompanyGroups(companyId){
       ISACTIVE : true
     }
   }
-  return apiClient.post('Services/CompanyService.svc/GetUsergroupsForCompany',searchCriteria)
+  return apiClient.post('/d',searchCriteria)
 },
 
   editFeatures(dataObject){
     alert(dataObject)
-    return serverClient.put('/feature-manager/features',dataObject)
+    return serverClient.put('/features',dataObject)
   }
 }
