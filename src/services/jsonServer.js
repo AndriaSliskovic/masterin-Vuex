@@ -42,11 +42,11 @@ export default {
   },
 
 getFeatures(){
-  return serverClient.get('/features')
+  return apiClient.get('/features')
 },
 
 getSelectedFeatures(guid){
-  return serverClient.get(`/features/${guid}`)
+  return apiClient.get(`/features/${guid}`)
 },
 
 getCompanyGroups(companyId){
@@ -62,6 +62,6 @@ getCompanyGroups(companyId){
 
   editFeatures(dataObject){
     alert(dataObject)
-    return serverClient.put('/features',dataObject)
+    return apiClient.put('/features',dataObject)
   }
 }

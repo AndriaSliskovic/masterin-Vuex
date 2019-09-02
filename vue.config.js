@@ -1,5 +1,6 @@
 module.exports = {
-  outputDir: 'C:\development\source\Repos\deluxebrandcenter\Argosy.Web.Backend\Scripts\Vue',
+  //outputDir: 'C:\development\source\Repos\deluxebrandcenter\Argosy.Web.Backend\Scripts\Vue',
+  outputDir: 'dist',
   configureWebpack: {
     optimization: {
       splitChunks: false

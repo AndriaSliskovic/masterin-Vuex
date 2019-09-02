@@ -1,6 +1,6 @@
 import EventService from '../../services/EventService'
-import { async } from 'q';
-import { stat } from 'fs';
+import dbcServer from '../../services/dbcServer'
+
 
 export const namespaced = true
 
@@ -42,7 +42,7 @@ export const mutations = {
 export const actions = {
   fetchCompanies({ commit,dispatch }) {
     //Koristi isti metod za ucitavanja kompanija i grupa
-    return EventService.getCompanies()
+    return dbcServer.getCompanies()
       .then(response => {
         //console.log(response.data)
         commit('FETCH_COMPANIES', response.data)
@@ -57,7 +57,7 @@ export const actions = {
   },
 
   fetchInitialModules({ commit }){
-    return EventService.getFeatures()
+    return dbcServer.getFeatures()
     .then(response=>{
       commit('FETCH_INITIAL_MODULES',response.data)
     })
@@ -67,7 +67,7 @@ export const actions = {
   },
 
   getSelectedModules({commit},compGuid){
-     return EventService.getSelectedFeatures(compGuid)
+     return dbcServer.getSelectedFeatures(compGuid)
     .then(response=>{
       commit('SELECTED_MODULES',response.data)
     })
@@ -76,7 +76,7 @@ export const actions = {
     })
   },
   getCompanyGroups({commit},companyId){
-    return EventService.getCompanyGroups(companyId)
+    return dbcServer.getCompanyGroups(companyId)
    .then(response=>{
      var items = response.data.d.map(ug =>  {
         return {
@@ -109,7 +109,7 @@ export const actions = {
   },
   submitForm({commit,dispatch},object){
     commit('SEND_DATA',object)
-    return EventService.editFeatures(object)
+    return dbcServer.editFeatures(object)
     .then(
       ()=>{
         const notification={

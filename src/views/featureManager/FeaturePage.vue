@@ -136,22 +136,19 @@ export default {
       return this.selectedCompany.CompanyId
     },
     disabledButton: function() {
-      return !this.options
+      return !this.options || !this.feature.selectedModules
     },
     disabledSelectSettings: function() {
       return !this.selectedCompany
     },
     subscribedFeatureIds: function() {
-      let names = this.feature.selectedModules
-      let modules = this.feature.initialModules
-
+      const names = this.feature.selectedModules
+      const modules = this.feature.initialModules
       return modules
         .filter(x => names.includes(x.name))
         .map(x => {
           return x.id
-        })
-
-      //return modules
+        }) 
     }
   },
   created() {
@@ -163,7 +160,6 @@ export default {
     userGroupIsSelected() {
       store.dispatch('feature/getCompanyGroups', this.selectedCompany.CompanyId)
       if (this.selectedGroupGuid) {
-        console.log('imam guid')
         store.dispatch('feature/cleanModules')
         store
           .dispatch('feature/getSelectedModules', this.selectedGroupGuid)
@@ -190,7 +186,7 @@ export default {
     setSelectedCompany() {
       this.options = null
       //Clearing user group guid
-      this.selectedGroupGuid=null
+      this.selectedGroupGuid = null
       //Clearing modules
       store.dispatch('feature/cleanModules')
       store.dispatch(
